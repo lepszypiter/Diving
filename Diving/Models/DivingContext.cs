@@ -13,5 +13,5 @@ public class DivingContext : DbContext
     public DbSet<Client> Clients { get; set; } = null!;
     public DbSet<Course> Courses { get; set; } = null!;
     public DbSet<Instructor> Instructors { get; set; } = null!;
-    public DbSet<ClientCourse> ClientCourses { get; set; } = null!;
+    public DbSet<ClientWithCourse> ClientWithCourses { get; set; } = null!;
 }

@@ -1,4 +1,4 @@
-﻿using Diving.Models;
+using Diving.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

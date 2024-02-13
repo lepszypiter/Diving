@@ -1,6 +1,6 @@
 ﻿namespace Diving.Models;
 
-public class ClientCourse
+public class ClientWithCourse
 {
     public long Id { get; set; }
     public long ClientId { get; set; }
