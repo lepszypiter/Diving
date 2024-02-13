@@ -41,7 +41,7 @@ namespace Diving.Controllers;
         [HttpPut("{id}")]
         public async Task<IActionResult> PutClient(long id, Models.Client client)
         {
-            if (id != client.Id)
+            if (id != client.ClientId)
             {
                 return BadRequest();
             }
@@ -75,7 +75,7 @@ namespace Diving.Controllers;
             _context.Clients.Add(client);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetClient", new { id = client.Id }, client);
+            return CreatedAtAction("GetClient", new { id = client.ClientId }, client);
         }
 
         // DELETE: api/Clients/5
@@ -96,7 +96,7 @@ namespace Diving.Controllers;
 
         private bool ClientExists(long id)
         {
-            return _context.Clients.Any(e => e.Id == id);
+            return _context.Clients.Any(e => e.ClientId == id);
         }
     }
 

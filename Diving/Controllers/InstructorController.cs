@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,47 +11,47 @@ namespace Diving.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CoursesController : ControllerBase
+    public class InstructorController : ControllerBase
     {
         private readonly DivingContext _context;
 
-        public CoursesController(DivingContext context)
+        public InstructorController(DivingContext context)
         {
             _context = context;
         }
 
-        // GET: api/Courses
+        // GET: api/Instructor
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Course>>> GetCourses()
+        public async Task<ActionResult<IEnumerable<Instructor>>> GetInstructor_1()
         {
-            return await _context.Courses.ToListAsync();
+            return await _context.Instructor_1.ToListAsync();
         }
 
-        // GET: api/Courses/5
+        // GET: api/Instructor/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Course>> GetCourse(long id)
+        public async Task<ActionResult<Instructor>> GetInstructor(long id)
         {
-            var course = await _context.Courses.FindAsync(id);
+            var instructor = await _context.Instructor_1.FindAsync(id);
 
-            if (course == null)
+            if (instructor == null)
             {
                 return NotFound();
             }
 
-            return course;
+            return instructor;
         }
 
-        // PUT: api/Courses/5
+        // PUT: api/Instructor/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCourse(long id, Course course)
+        public async Task<IActionResult> PutInstructor(long id, Instructor instructor)
         {
-            if (id != course.CourseId)
+            if (id != instructor.InstructorId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(course).State = EntityState.Modified;
+            _context.Entry(instructor).State = EntityState.Modified;
 
             try
             {
@@ -59,7 +59,7 @@ namespace Diving.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CourseExists(id))
+                if (!InstructorExists(id))
                 {
                     return NotFound();
                 }
@@ -72,36 +72,36 @@ namespace Diving.Controllers
             return NoContent();
         }
 
-        // POST: api/Courses
+        // POST: api/Instructor
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Course>> PostCourse(Course course)
+        public async Task<ActionResult<Instructor>> PostInstructor(Instructor instructor)
         {
-            _context.Courses.Add(course);
+            _context.Instructor_1.Add(instructor);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCourse", new { id = course.CourseId }, course);
+            return CreatedAtAction("GetInstructor", new { id = instructor.InstructorId }, instructor);
         }
 
-        // DELETE: api/Courses/5
+        // DELETE: api/Instructor/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCourse(long id)
+        public async Task<IActionResult> DeleteInstructor(long id)
         {
-            var course = await _context.Courses.FindAsync(id);
-            if (course == null)
+            var instructor = await _context.Instructor_1.FindAsync(id);
+            if (instructor == null)
             {
                 return NotFound();
             }
 
-            _context.Courses.Remove(course);
+            _context.Instructor_1.Remove(instructor);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool CourseExists(long id)
+        private bool InstructorExists(long id)
         {
-            return _context.Courses.Any(e => e.CourseId == id);
+            return _context.Instructor_1.Any(e => e.InstructorId == id);
         }
     }
 }

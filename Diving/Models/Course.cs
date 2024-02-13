@@ -2,7 +2,7 @@
 
 public class Course
 {
-    public long Id { get; set; }
+    public long CourseId { get; set; }
     public string? Name { get; set; }
     public string? Instructor { get; set; }
     public int? HoursOnOpenWater { get; set; }
