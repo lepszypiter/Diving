@@ -12,7 +12,6 @@ public class DivingContext : DbContext
 
     public DbSet<Client> Clients { get; set; } = null!;
     public DbSet<Course> Courses { get; set; } = null!;
-    public DbSet<Course> Instructor { get; set; } = null!;
-
-public DbSet<Diving.Models.Instructor> Instructor_1 { get; set; } = default!;
+    public DbSet<Instructor> Instructors { get; set; } = null!;
+    public DbSet<ClientCourse> ClientCourses { get; set; } = null!;
 }
