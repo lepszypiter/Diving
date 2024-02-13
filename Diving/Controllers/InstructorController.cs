@@ -22,16 +22,16 @@ namespace Diving.Controllers
 
         // GET: api/Instructor
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Instructor>>> GetInstructor_1()
+        public async Task<ActionResult<IEnumerable<Instructor>>> GetInstructors()
         {
-            return await _context.Instructor_1.ToListAsync();
+            return await _context.Instructors.ToListAsync();
         }
 
         // GET: api/Instructor/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Instructor>> GetInstructor(long id)
         {
-            var instructor = await _context.Instructor_1.FindAsync(id);
+            var instructor = await _context.Instructors.FindAsync(id);
 
             if (instructor == null)
             {
@@ -77,7 +77,7 @@ namespace Diving.Controllers
         [HttpPost]
         public async Task<ActionResult<Instructor>> PostInstructor(Instructor instructor)
         {
-            _context.Instructor_1.Add(instructor);
+            _context.Instructors.Add(instructor);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetInstructor", new { id = instructor.InstructorId }, instructor);
@@ -87,13 +87,13 @@ namespace Diving.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteInstructor(long id)
         {
-            var instructor = await _context.Instructor_1.FindAsync(id);
+            var instructor = await _context.Instructors.FindAsync(id);
             if (instructor == null)
             {
                 return NotFound();
             }
 
-            _context.Instructor_1.Remove(instructor);
+            _context.Instructors.Remove(instructor);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -101,7 +101,7 @@ namespace Diving.Controllers
 
         private bool InstructorExists(long id)
         {
-            return _context.Instructor_1.Any(e => e.InstructorId == id);
+            return _context.Instructors.Any(e => e.InstructorId == id);
         }
     }
 }
