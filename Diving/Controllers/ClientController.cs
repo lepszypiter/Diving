@@ -1,9 +1,14 @@
-using Diving.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Diving.Models;
 
-namespace Diving.Controllers;
-
+namespace Diving.Controllers
+{
     [Route("api/[controller]")]
     [ApiController]
     public class ClientController : ControllerBase
@@ -15,16 +20,16 @@ namespace Diving.Controllers;
             _context = context;
         }
 
-        // GET: api/Clients
+        // GET: api/Client
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Models.Client>>> GetClients()
+        public async Task<ActionResult<IEnumerable<Client>>> GetClients()
         {
             return await _context.Clients.ToListAsync();
         }
 
-        // GET: api/Clients/5
+        // GET: api/Client/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Models.Client>> GetClient(long id)
+        public async Task<ActionResult<Client>> GetClient(long id)
         {
             var client = await _context.Clients.FindAsync(id);
 
@@ -36,10 +41,10 @@ namespace Diving.Controllers;
             return client;
         }
 
-        // PUT: api/Clients/5
+        // PUT: api/Client/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutClient(long id, Models.Client client)
+        public async Task<IActionResult> PutClient(long id, Client client)
         {
             if (id != client.ClientId)
             {
@@ -67,10 +72,10 @@ namespace Diving.Controllers;
             return NoContent();
         }
 
-        // POST: api/Clients
+        // POST: api/Client
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Models.Client>> PostClient(Models.Client client)
+        public async Task<ActionResult<Client>> PostClient(Client client)
         {
             _context.Clients.Add(client);
             await _context.SaveChangesAsync();
@@ -78,7 +83,7 @@ namespace Diving.Controllers;
             return CreatedAtAction("GetClient", new { id = client.ClientId }, client);
         }
 
-        // DELETE: api/Clients/5
+        // DELETE: api/Client/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteClient(long id)
         {
@@ -99,4 +104,4 @@ namespace Diving.Controllers;
             return _context.Clients.Any(e => e.ClientId == id);
         }
     }
-
+}
