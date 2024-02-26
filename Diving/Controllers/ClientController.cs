@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Diving.Models;
+using Diving.Repositories;
 
 namespace Diving.Controllers
 {
@@ -13,25 +8,26 @@ namespace Diving.Controllers
     [ApiController]
     public class ClientController : ControllerBase
     {
-        private readonly DivingContext _context;
+        private readonly IClientRepository _clientRepository;
 
-        public ClientController(DivingContext context)
+        public ClientController(IClientRepository clientRepository)
         {
-            _context = context;
+            _clientRepository = clientRepository;
         }
 
         // GET: api/Client
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Client>>> GetClients()
         {
-            return await _context.Clients.ToListAsync();
+            var clients = await _clientRepository.GetAllClients();
+            return Ok(clients);
         }
 
         // GET: api/Client/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Client>> GetClient(long id)
         {
-            var client = await _context.Clients.FindAsync(id);
+            var client = await _clientRepository.GetById(id);//_context.Clients.FindAsync(id);
 
             if (client == null)
             {
@@ -51,24 +47,8 @@ namespace Diving.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(client).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ClientExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            await _clientRepository.Add(client);
+            
             return NoContent();
         }
 
@@ -77,8 +57,8 @@ namespace Diving.Controllers
         [HttpPost]
         public async Task<ActionResult<Client>> PostClient(Client client)
         {
-            _context.Clients.Add(client);
-            await _context.SaveChangesAsync();
+            await _clientRepository.Add(client);
+            await _clientRepository.Save();
 
             return CreatedAtAction("GetClient", new { id = client.ClientId }, client);
         }
@@ -87,21 +67,16 @@ namespace Diving.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteClient(long id)
         {
-            var client = await _context.Clients.FindAsync(id);
+            var client = await _clientRepository.GetById(id);
             if (client == null)
             {
                 return NotFound();
             }
 
-            _context.Clients.Remove(client);
-            await _context.SaveChangesAsync();
+            _clientRepository.Remove(client);
+            await _clientRepository.Save();
 
             return NoContent();
-        }
-
-        private bool ClientExists(long id)
-        {
-            return _context.Clients.Any(e => e.ClientId == id);
         }
     }
 }
