@@ -35,9 +35,9 @@ class ClientRepository : IClientRepository
         {
             await Save();
         }
-        catch (DbUpdateConcurrencyException)
+        catch (DbUpdateConcurrencyException ex)
         {
-            _logger.LogError("AddClient ClientNotFound");// log execption as error 
+            _logger.LogError(ex, "AddClient ClientNotFound {Msg}", ex.Message);// log execption as error 
             // if (!ClientExists(id))
             // {
             //     return NotFound();
@@ -52,8 +52,8 @@ class ClientRepository : IClientRepository
 
     public async Task Save()
     {
-        await _context.SaveChangesAsync();
-        _logger.LogInformation("Record changed");// log changed record 
+        var ret = await _context.SaveChangesAsync();
+        _logger.LogInformation("Record changed {Count}", ret);// log changed record 
     }
 
     public void Remove(Client client)
