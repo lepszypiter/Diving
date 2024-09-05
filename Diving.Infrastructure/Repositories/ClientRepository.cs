@@ -1,9 +1,10 @@
 ﻿using Diving.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
-namespace Diving.Repositories;
+namespace Diving.Infrastructure.Repositories;
 
-class ClientRepository : IClientRepository
+public class ClientRepository : IClientRepository
 {
     private readonly DivingContext _context;
     private readonly ILogger _logger;
@@ -29,24 +30,7 @@ class ClientRepository : IClientRepository
 
     public async Task Add(Client client)
     {
-        _context.Entry(client).State = EntityState.Modified;
-
-        try
-        {
-            await Save();
-        }
-        catch (DbUpdateConcurrencyException ex)
-        {
-            _logger.LogError(ex, "AddClient ClientNotFound {Msg}", ex.Message);// log execption as error 
-            // if (!ClientExists(id))
-            // {
-            //     return NotFound();
-            // }
-            // else
-            {
-                throw;
-            }
-        }
+        await _context.Clients.AddAsync(client);
 
     }
 

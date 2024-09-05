@@ -1,6 +1,6 @@
+using Diving.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Diving.Models;
-using Diving.Repositories;
 
 namespace Diving.Controllers
 {

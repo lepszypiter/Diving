@@ -1,5 +1,6 @@
+using Diving.Infrastructure;
+using Diving.Infrastructure.Repositories;
 using Diving.Models;
-using Diving.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Diving", "Diving\Diving.csproj", "{F717A2D3-40D3-4D03-9F6E-46E88A1646C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Diving.Domain", "Diving.Domain\Diving.Domain.csproj", "{F717A2D3-40D3-4D03-9F6E-46E88A1646C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diving.Aplication", "..\DivingAplication\Diving.Aplication\Diving.Aplication.csproj", "{48D52056-6FF8-483D-9048-D2DA213652B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diving.Infrastructure", "Diving.Infrastructure\Diving.Infrastructure.csproj", "{A861BE9D-3409-4FDD-B8F5-E410B0DB1D64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diving.API", "Diving.API\Diving.API.csproj", "{060BEA11-018C-418D-8379-C684A0CE2079}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{F717A2D3-40D3-4D03-9F6E-46E88A1646C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F717A2D3-40D3-4D03-9F6E-46E88A1646C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F717A2D3-40D3-4D03-9F6E-46E88A1646C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48D52056-6FF8-483D-9048-D2DA213652B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48D52056-6FF8-483D-9048-D2DA213652B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48D52056-6FF8-483D-9048-D2DA213652B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48D52056-6FF8-483D-9048-D2DA213652B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A861BE9D-3409-4FDD-B8F5-E410B0DB1D64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A861BE9D-3409-4FDD-B8F5-E410B0DB1D64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A861BE9D-3409-4FDD-B8F5-E410B0DB1D64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A861BE9D-3409-4FDD-B8F5-E410B0DB1D64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{060BEA11-018C-418D-8379-C684A0CE2079}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{060BEA11-018C-418D-8379-C684A0CE2079}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{060BEA11-018C-418D-8379-C684A0CE2079}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{060BEA11-018C-418D-8379-C684A0CE2079}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

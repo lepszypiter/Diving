@@ -1,7 +1,7 @@
-using Microsoft.EntityFrameworkCore;
 using Diving.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace Diving.Models;
+namespace Diving.Infrastructure;
 
 public class DivingContext : DbContext
 {

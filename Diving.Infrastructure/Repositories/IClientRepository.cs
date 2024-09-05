@@ -1,7 +1,6 @@
 ﻿using Diving.Models;
-using Microsoft.AspNetCore.Mvc;
 
-namespace Diving.Repositories;
+namespace Diving.Infrastructure.Repositories;
 
 public interface IClientRepository
 {
