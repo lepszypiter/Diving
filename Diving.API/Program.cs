@@ -1,20 +1,15 @@
 using Diving.Infrastructure;
-using Diving.Infrastructure.Repositories;
-using Diving.Models;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddDbContext<DivingContext>(opt =>
-    opt.UseSqlite("Data Source=C:\\DB\\diving.db"));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<IClientRepository, ClientRepository>();
 
+builder.Services.RegisterServices(builder.Configuration);
 
 var app = builder.Build();
 

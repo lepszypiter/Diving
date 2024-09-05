@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Diving.Infrastructure.Repositories;
 
-public class ClientRepository : IClientRepository
+internal class ClientRepository : IClientRepository
 {
     private readonly DivingContext _context;
     private readonly ILogger _logger;
