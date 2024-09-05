@@ -19,10 +19,7 @@ namespace Diving.Migrations
                     ClientId = table.Column<long>(type: "INTEGER", nullable: false),
                     InstructorId = table.Column<long>(type: "INTEGER", nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ClientWithCourses", x => x.Id);
-                });
+                constraints: table => table.PrimaryKey("PK_ClientWithCourses", x => x.Id));
 
             migrationBuilder.CreateTable(
                 name: "Clients",
@@ -36,10 +33,7 @@ namespace Diving.Migrations
                     Email = table.Column<string>(type: "TEXT", nullable: true),
                     ClientCourses = table.Column<string>(type: "TEXT", nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Clients", x => x.ClientId);
-                });
+                constraints: table => table.PrimaryKey("PK_Clients", x => x.ClientId));
 
             migrationBuilder.CreateTable(
                 name: "Courses",
@@ -54,10 +48,7 @@ namespace Diving.Migrations
                     HoursOfLectures = table.Column<int>(type: "INTEGER", nullable: true),
                     Price = table.Column<decimal>(type: "TEXT", nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Courses", x => x.CourseId);
-                });
+                constraints: table => table.PrimaryKey("PK_Courses", x => x.CourseId));
 
             migrationBuilder.CreateTable(
                 name: "Instructors",
@@ -68,10 +59,7 @@ namespace Diving.Migrations
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     Surname = table.Column<string>(type: "TEXT", nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Instructors", x => x.InstructorId);
-                });
+                constraints: table => table.PrimaryKey("PK_Instructors", x => x.InstructorId));
         }
 
         /// <inheritdoc />

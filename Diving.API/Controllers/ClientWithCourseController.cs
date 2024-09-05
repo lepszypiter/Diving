@@ -1,103 +1,83 @@
 using Diving.Infrastructure;
+using Diving.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Diving.Models;
 
-namespace Diving.Controllers
+namespace Diving.API.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class ClientWithCourseController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ClientWithCourseController : ControllerBase
+    private readonly DivingContext _context;
+
+    public ClientWithCourseController(DivingContext context)
     {
-        private readonly DivingContext _context;
+        _context = context;
+    }
 
-        public ClientWithCourseController(DivingContext context)
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<ClientWithCourse>>> GetClientWithCourses()
+    {
+        return await _context.ClientWithCourses.ToListAsync();
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<ClientWithCourse>> GetClientWithCourse(long id)
+    {
+        var clientWithCourse = await _context.ClientWithCourses.FindAsync(id);
+
+        return clientWithCourse ?? (ActionResult<ClientWithCourse>)NotFound();
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> PutClientWithCourse(long id, ClientWithCourse clientWithCourse)
+    {
+        if (id != clientWithCourse.Id)
         {
-            _context = context;
+            return BadRequest();
         }
 
-        // GET: api/ClientWithCourse
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<ClientWithCourse>>> GetClientWithCourses()
+        _context.Entry(clientWithCourse).State = EntityState.Modified;
+
+        try
         {
-            return await _context.ClientWithCourses.ToListAsync();
-        }
-
-        // GET: api/ClientWithCourse/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ClientWithCourse>> GetClientWithCourse(long id)
-        {
-            var clientWithCourse = await _context.ClientWithCourses.FindAsync(id);
-
-            if (clientWithCourse == null)
-            {
-                return NotFound();
-            }
-
-            return clientWithCourse;
-        }
-
-        // PUT: api/ClientWithCourse/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutClientWithCourse(long id, ClientWithCourse clientWithCourse)
-        {
-            if (id != clientWithCourse.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(clientWithCourse).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ClientWithCourseExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/ClientWithCourse
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<ClientWithCourse>> PostClientWithCourse(ClientWithCourse clientWithCourse)
-        {
-            _context.ClientWithCourses.Add(clientWithCourse);
             await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetClientWithCourse", new { id = clientWithCourse.Id }, clientWithCourse);
         }
-
-        // DELETE: api/ClientWithCourse/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteClientWithCourse(long id)
+        catch (DbUpdateConcurrencyException) when (!ClientWithCourseExists(id))
         {
-            var clientWithCourse = await _context.ClientWithCourses.FindAsync(id);
-            if (clientWithCourse == null)
-            {
-                return NotFound();
-            }
-
-            _context.ClientWithCourses.Remove(clientWithCourse);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            return NotFound();
         }
 
-        private bool ClientWithCourseExists(long id)
+        return NoContent();
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<ClientWithCourse>> PostClientWithCourse(ClientWithCourse clientWithCourse)
+    {
+        _context.ClientWithCourses.Add(clientWithCourse);
+        await _context.SaveChangesAsync();
+
+        return CreatedAtAction("GetClientWithCourse", new { id = clientWithCourse.Id }, clientWithCourse);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteClientWithCourse(long id)
+    {
+        var clientWithCourse = await _context.ClientWithCourses.FindAsync(id);
+        if (clientWithCourse == null)
         {
-            return _context.ClientWithCourses.Any(e => e.Id == id);
+            return NotFound();
         }
+
+        _context.ClientWithCourses.Remove(clientWithCourse);
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
+
+    private bool ClientWithCourseExists(long id)
+    {
+        return _context.ClientWithCourses.Any(e => e.Id == id);
     }
 }

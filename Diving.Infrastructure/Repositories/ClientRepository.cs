@@ -24,20 +24,19 @@ internal class ClientRepository : IClientRepository
 
     public async Task<Client?> GetById(long id)
     {
-        _logger.LogInformation("Id {}", id);// log id 
+        _logger.LogInformation("Id {}", id);// log id
         return await _context.Clients.FindAsync(id);
     }
 
     public async Task Add(Client client)
     {
         await _context.Clients.AddAsync(client);
-
     }
 
     public async Task Save()
     {
         var ret = await _context.SaveChangesAsync();
-        _logger.LogInformation("Record changed {Count}", ret);// log changed record 
+        _logger.LogInformation("Record changed {Count}", ret);// log changed record
     }
 
     public void Remove(Client client)

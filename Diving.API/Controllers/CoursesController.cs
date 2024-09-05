@@ -1,103 +1,83 @@
 ﻿using Diving.Infrastructure;
+using Diving.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Diving.Models;
 
-namespace Diving.Controllers
+namespace Diving.API.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class CoursesController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CoursesController : ControllerBase
+    private readonly DivingContext _context;
+
+    public CoursesController(DivingContext context)
     {
-        private readonly DivingContext _context;
+        _context = context;
+    }
 
-        public CoursesController(DivingContext context)
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Course>>> GetCourses()
+    {
+        return await _context.Courses.ToListAsync();
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Course>> GetCourse(long id)
+    {
+        var course = await _context.Courses.FindAsync(id);
+
+        return course ?? (ActionResult<Course>)NotFound();
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> PutCourse(long id, Course course)
+    {
+        if (id != course.CourseId)
         {
-            _context = context;
+            return BadRequest();
         }
 
-        // GET: api/Courses
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Course>>> GetCourses()
+        _context.Entry(course).State = EntityState.Modified;
+
+        try
         {
-            return await _context.Courses.ToListAsync();
-        }
-
-        // GET: api/Courses/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Course>> GetCourse(long id)
-        {
-            var course = await _context.Courses.FindAsync(id);
-
-            if (course == null)
-            {
-                return NotFound();
-            }
-
-            return course;
-        }
-
-        // PUT: api/Courses/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCourse(long id, Course course)
-        {
-            if (id != course.CourseId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(course).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CourseExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Courses
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Course>> PostCourse(Course course)
-        {
-            _context.Courses.Add(course);
             await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetCourse", new { id = course.CourseId }, course);
         }
-
-        // DELETE: api/Courses/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCourse(long id)
+        catch (DbUpdateConcurrencyException) when (!CourseExists(id))
         {
-            var course = await _context.Courses.FindAsync(id);
-            if (course == null)
-            {
-                return NotFound();
-            }
-
-            _context.Courses.Remove(course);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            return NotFound();
         }
 
-        private bool CourseExists(long id)
+        return NoContent();
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<Course>> PostCourse(Course course)
+    {
+        _context.Courses.Add(course);
+        await _context.SaveChangesAsync();
+
+        return CreatedAtAction("GetCourse", new { id = course.CourseId }, course);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteCourse(long id)
+    {
+        var course = await _context.Courses.FindAsync(id);
+        if (course == null)
         {
-            return _context.Courses.Any(e => e.CourseId == id);
+            return NotFound();
         }
+
+        _context.Courses.Remove(course);
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
+
+    private bool CourseExists(long id)
+    {
+        return _context.Courses.Any(e => e.CourseId == id);
     }
 }

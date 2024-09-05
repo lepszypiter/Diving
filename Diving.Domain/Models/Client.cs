@@ -20,25 +20,10 @@ public class Client
         License = license;
         Email = email;
     }
-    
+
     public long ClientId { get; }
     public string? Name { get;  }
     public string? Surname { get; }
     public string? License { get; }
     public string? Email { get; private set; }
-    
-    void AddCourse(Course course)
-    {
-        // Add course to the list of courses
-    }
-    
-    void ChangeEmail(string email)
-    {
-        if (email == null)
-        {
-            throw new ArgumentNullException(nameof(email));
-        }
-        
-        Email = email;
-    }
 }
