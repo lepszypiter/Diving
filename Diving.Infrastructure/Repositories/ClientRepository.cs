@@ -1,4 +1,4 @@
-﻿using Diving.Models;
+﻿using Diving.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 

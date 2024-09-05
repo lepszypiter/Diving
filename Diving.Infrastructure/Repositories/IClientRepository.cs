@@ -1,4 +1,4 @@
-﻿using Diving.Models;
+﻿using Diving.Domain.Models;
 
 namespace Diving.Infrastructure.Repositories;
 

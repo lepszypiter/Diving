@@ -1,4 +1,4 @@
-using Diving.Models;
+using Diving.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Diving.Infrastructure;
@@ -12,6 +12,9 @@ public class DivingContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlite("Data Source=C:\\DB\\diving.db");
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+        => modelBuilder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
 
     public DbSet<Client> Clients { get; set; } = null!;
     public DbSet<Course> Courses { get; set; } = null!;

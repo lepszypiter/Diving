@@ -1,4 +1,4 @@
-﻿namespace Diving.Models;
+﻿namespace Diving.Domain.Models;
 
 public class ClientData
 {
@@ -12,6 +12,10 @@ public class ClientData
 
 public class Client
 {
+    private Client()
+    {
+    }
+
     internal Client(long clientId, string? name, string? surname, string? license, string? email)
     {
         ClientId = clientId;

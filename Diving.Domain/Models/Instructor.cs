@@ -1,4 +1,4 @@
-﻿namespace Diving.Models;
+﻿namespace Diving.Domain.Models;
 
 public class Instructor
 {

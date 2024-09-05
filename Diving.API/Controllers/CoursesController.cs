@@ -1,5 +1,5 @@
-﻿using Diving.Infrastructure;
-using Diving.Models;
+﻿using Diving.Domain.Models;
+using Diving.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,6 +1,6 @@
 @Nurkowanie_HostAddress = http://localhost:5175
 
-GET {{Nurkowanie_HostAddress}}/weatherforecast/
+GET {{Nurkowanie_HostAddress}}//api/Client
 Accept: application/json
 
 ###
