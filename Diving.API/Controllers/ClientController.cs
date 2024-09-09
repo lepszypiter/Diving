@@ -1,3 +1,4 @@
+using Diving.Application.AddClient;
 using Diving.Application.GetClients;
 using Diving.Domain.Models;
 using Diving.Infrastructure.Repositories;
@@ -12,13 +13,16 @@ public class ClientController : ControllerBase
     private readonly IClientRepository _clientRepository;
     private readonly ILogger _logger;
     private readonly GetClientsQueryHandler _getClientsQueryHandler;
+    private readonly AddClientCommandHandler _addClientCommandHandler;
 
     public ClientController(
         IClientRepository clientRepository,
         ILogger<ClientController> logger,
-        GetClientsQueryHandler getClientsQueryHandler)
+        GetClientsQueryHandler getClientsQueryHandler,
+        AddClientCommandHandler addClientCommandHandler)
     {
         _getClientsQueryHandler = getClientsQueryHandler;
+        _addClientCommandHandler = addClientCommandHandler;
         _clientRepository = clientRepository;
         _logger = logger;
     }
@@ -29,6 +33,14 @@ public class ClientController : ControllerBase
         _logger.LogInformation("GET: GetAllClients");
         var clients = await _getClientsQueryHandler.Handle();
         return Ok(clients);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<ClientDto>> PostClient(NewClientDto newClientDto)
+    {
+        _logger.LogInformation("POST: AddClient");
+        var client = await _addClientCommandHandler.Handle(newClientDto);
+        return CreatedAtAction("GetClient", new { id = client.ClientId }, client);
     }
 
     [HttpGet("{id}")]
@@ -52,16 +64,6 @@ public class ClientController : ControllerBase
         await _clientRepository.Add(client);
 
         return NoContent();
-    }
-
-    [HttpPost]
-    public async Task<ActionResult<Client>> PostClient(Client client)
-    {
-        _logger.LogInformation("POST: AddClient");
-        await _clientRepository.Add(client);
-        await _clientRepository.Save();
-
-        return CreatedAtAction("GetClient", new { id = client.ClientId }, client);
     }
 
     [HttpDelete("{id}")]

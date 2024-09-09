@@ -2,6 +2,11 @@
 
 public class Client
 {
+    public static Client CreateNewClient(string name, string surname, string email)
+    {
+        return new(0, name, surname, null, email);
+    }
+
     private Client()
     {
     }
