@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diving.Infrastructure", "Di
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diving.API", "Diving.API\Diving.API.csproj", "{060BEA11-018C-418D-8379-C684A0CE2079}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diving.Domain.Tests", "Diving.Domain.Tests\Diving.Domain.Tests.csproj", "{A166735C-F970-4B40-B580-DA5A093ADDB5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{060BEA11-018C-418D-8379-C684A0CE2079}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{060BEA11-018C-418D-8379-C684A0CE2079}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{060BEA11-018C-418D-8379-C684A0CE2079}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A166735C-F970-4B40-B580-DA5A093ADDB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A166735C-F970-4B40-B580-DA5A093ADDB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A166735C-F970-4B40-B580-DA5A093ADDB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A166735C-F970-4B40-B580-DA5A093ADDB5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,7 +4,12 @@ public class Client
 {
     public static Client CreateNewClient(string name, string surname, string email)
     {
-        return new(0, name, surname, null, email);
+        if (email.Contains('@'))
+        {
+            return new Client(0, name, surname, null, email);
+        }
+
+        throw new ArgumentException("Email is not valid");
     }
 
     private Client()
