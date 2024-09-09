@@ -1,15 +1,5 @@
 ﻿namespace Diving.Domain.Models;
 
-public class ClientData
-{
-    public long ClientId { get; set; }
-    public string? Name { get; set; }
-    public string? Surname { get; set; }
-    public string? License { get; set; }
-    public string? Email { get; set; }
-    public List<int>? ClientCourses { get; set; }
-}
-
 public class Client
 {
     private Client()

@@ -1,3 +1,4 @@
+using Diving.Application.GetClients;
 using Diving.Domain.Models;
 using Diving.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -10,18 +11,23 @@ public class ClientController : ControllerBase
 {
     private readonly IClientRepository _clientRepository;
     private readonly ILogger _logger;
+    private readonly GetClientsQueryHandler _getClientsQueryHandler;
 
-    public ClientController(IClientRepository clientRepository, ILogger<ClientController> logger)
+    public ClientController(
+        IClientRepository clientRepository,
+        ILogger<ClientController> logger,
+        GetClientsQueryHandler getClientsQueryHandler)
     {
+        _getClientsQueryHandler = getClientsQueryHandler;
         _clientRepository = clientRepository;
         _logger = logger;
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Client>>> GetClients()
+    public async Task<ActionResult<IEnumerable<ClientDto>>> GetClients()
     {
         _logger.LogInformation("GET: GetAllClients");
-        var clients = await _clientRepository.GetAllClients();
+        var clients = await _getClientsQueryHandler.Handle();
         return Ok(clients);
     }
 

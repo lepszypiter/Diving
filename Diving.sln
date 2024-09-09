@@ -5,7 +5,7 @@ VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Diving.Domain", "Diving.Domain\Diving.Domain.csproj", "{F717A2D3-40D3-4D03-9F6E-46E88A1646C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diving.Aplication", "..\DivingAplication\Diving.Aplication\Diving.Aplication.csproj", "{48D52056-6FF8-483D-9048-D2DA213652B6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diving.Application", "..\DivingAplication\Diving.Application\Diving.Application.csproj", "{48D52056-6FF8-483D-9048-D2DA213652B6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diving.Infrastructure", "Diving.Infrastructure\Diving.Infrastructure.csproj", "{A861BE9D-3409-4FDD-B8F5-E410B0DB1D64}"
 EndProject
