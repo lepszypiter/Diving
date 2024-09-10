@@ -1,7 +1,7 @@
 using Diving.Application.AddClient;
 using Diving.Application.GetClients;
+using Diving.Application.ModifyClients;
 using Diving.Domain.Models;
-using Diving.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Diving.API.Controllers;
@@ -14,15 +14,18 @@ public class ClientController : ControllerBase
     private readonly ILogger _logger;
     private readonly GetClientsQueryHandler _getClientsQueryHandler;
     private readonly AddClientCommandHandler _addClientCommandHandler;
+    private readonly ModifyClientsCommandHandler _modifyClientsCommandHandler;
 
     public ClientController(
         IClientRepository clientRepository,
         ILogger<ClientController> logger,
         GetClientsQueryHandler getClientsQueryHandler,
-        AddClientCommandHandler addClientCommandHandler)
+        AddClientCommandHandler addClientCommandHandler,
+        ModifyClientsCommandHandler modifyClientsCommandHandler)
     {
         _getClientsQueryHandler = getClientsQueryHandler;
         _addClientCommandHandler = addClientCommandHandler;
+        _modifyClientsCommandHandler = modifyClientsCommandHandler;
         _clientRepository = clientRepository;
         _logger = logger;
     }
@@ -53,17 +56,19 @@ public class ClientController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutClient(long id, Client client)
+    public async Task<ActionResult<Client>> PutClient(ModifyClientDto dto)
     {
-        _logger.LogInformation("PUT: AddOrChangeClient");
-        if (id != client.ClientId)
+        _logger.LogInformation("PUT: ChangeClient");
+
+        try
         {
-            return BadRequest();
+           var result =  await _modifyClientsCommandHandler.Handle(dto);
+           return Ok(result);
         }
-
-        await _clientRepository.Add(client);
-
-        return NoContent();
+        catch (ArgumentException)
+        {
+            return NotFound();
+        }
     }
 
     [HttpDelete("{id}")]

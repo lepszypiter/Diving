@@ -1,4 +1,5 @@
-﻿using Diving.Infrastructure.Repositories;
+﻿using Diving.Domain.Models;
+using Diving.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 

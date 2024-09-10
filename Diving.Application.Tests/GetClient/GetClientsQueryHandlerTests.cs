@@ -1,7 +1,6 @@
 using AutoFixture;
 using Diving.Application.GetClients;
 using Diving.Domain.Models;
-using Diving.Infrastructure.Repositories;
 using FluentAssertions;
 using Moq;
 

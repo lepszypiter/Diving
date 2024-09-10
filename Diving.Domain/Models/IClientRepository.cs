@@ -1,6 +1,4 @@
-﻿using Diving.Domain.Models;
-
-namespace Diving.Infrastructure.Repositories;
+﻿namespace Diving.Domain.Models;
 
 public interface IClientRepository
 {
