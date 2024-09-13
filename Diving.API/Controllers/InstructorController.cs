@@ -1,7 +1,8 @@
+using Diving.Application.AddInstructor;
+using Diving.Application.GetInstructor;
+using Diving.Application.ModifyInstructor;
 using Diving.Domain.Models;
-using Diving.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Diving.API.Controllers;
 
@@ -9,75 +10,80 @@ namespace Diving.API.Controllers;
 [ApiController]
 public class InstructorController : ControllerBase
 {
-    private readonly DivingContext _context;
+    private readonly IInstructorRepository _InstructorRepository;
+    private readonly ILogger _logger;
+    private readonly GetInstructorsQueryHandler _getInstructorsQueryHandler;
+    private readonly AddInstructorCommandHandler _addInstructorCommandHandler;
+    private readonly ModifyInstructorCommandHandler _modifyInstructorCommandHandler;
 
-    public InstructorController(DivingContext context)
+    public InstructorController(
+        IInstructorRepository InstructorRepository,
+        ILogger<InstructorController> logger,
+        GetInstructorsQueryHandler getClientsQueryHandler,
+        AddInstructorCommandHandler addClientCommandHandler,
+        ModifyInstructorCommandHandler modifyClientsCommandHandler)
     {
-        _context = context;
+        _getInstructorsQueryHandler = getClientsQueryHandler;
+        _addInstructorCommandHandler = addClientCommandHandler;
+        _modifyInstructorCommandHandler = modifyClientsCommandHandler;
+        _InstructorRepository = InstructorRepository;
+        _logger = logger;
     }
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Instructor>>> GetInstructors()
     {
-        return await _context.Instructors.ToListAsync();
+        _logger.LogInformation("GET: GetAllInstructors");
+        var instructors = await _getInstructorsQueryHandler.Handle();
+        return Ok(instructors);
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Instructor>> GetInstructor(long id)
     {
-        var instructor = await _context.Instructors.FindAsync(id);
+        _logger.LogInformation("GET: GetInstructorWithId");
+        var instructor = await _InstructorRepository.GetById(id);
 
         return instructor ?? (ActionResult<Instructor>)NotFound();
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> PutInstructor(long id, Instructor instructor)
+    [HttpPost]
+    public async Task<ActionResult<Instructor>> PostInstructor(NewInstructorDto newInstructorDto)
     {
-        if (id != instructor.InstructorId)
-        {
-            return BadRequest();
-        }
+        _logger.LogInformation("POST: AddInstructor");
+        var instructor = await _addInstructorCommandHandler.Handle(newInstructorDto);
+        return CreatedAtAction("GetInstructor", new { id = instructor.InstructorId }, instructor);
+    }
 
-        _context.Entry(instructor).State = EntityState.Modified;
+    [HttpPut("{id}")]
+    public async Task<IActionResult> PutInstructor(ModifyInstructorDto dto)
+    {
+        _logger.LogInformation("PUT: ChangeInstructor");
 
         try
         {
-            await _context.SaveChangesAsync();
+            var result = await _modifyInstructorCommandHandler.Handle(dto);
+            return Ok(result);
         }
-        catch (DbUpdateConcurrencyException) when (!InstructorExists(id))
+        catch (ArgumentException)
         {
             return NotFound();
         }
-
-        return NoContent();
-    }
-
-    [HttpPost]
-    public async Task<ActionResult<Instructor>> PostInstructor(Instructor instructor)
-    {
-        _context.Instructors.Add(instructor);
-        await _context.SaveChangesAsync();
-
-        return CreatedAtAction("GetInstructor", new { id = instructor.InstructorId }, instructor);
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteInstructor(long id)
     {
-        var instructor = await _context.Instructors.FindAsync(id);
+        _logger.LogInformation("DELETE: DeleteInstructorWithID");
+        var instructor = await _InstructorRepository.GetById(id);
         if (instructor == null)
         {
             return NotFound();
         }
 
-        _context.Instructors.Remove(instructor);
-        await _context.SaveChangesAsync();
+        _InstructorRepository.Remove(instructor);
+        await _InstructorRepository.Save();
 
         return NoContent();
-    }
-
-    private bool InstructorExists(long id)
-    {
-        return _context.Instructors.Any(e => e.InstructorId == id);
     }
 }

@@ -2,6 +2,19 @@
 
 public class Client
 {
+    internal Client(long clientId, string? name, string? surname, string? license, string? email)
+    {
+        ClientId = clientId;
+        Name = name;
+        Surname = surname;
+        License = license;
+        Email = email;
+    }
+
+    private Client()
+    {
+    }
+
     public static Client CreateNewClient(string name, string surname, string email)
     {
         if (email.Contains('@'))
@@ -10,19 +23,6 @@ public class Client
         }
 
         throw new ArgumentException("Email is not valid");
-    }
-
-    private Client()
-    {
-    }
-
-    internal Client(long clientId, string? name, string? surname, string? license, string? email)
-    {
-        ClientId = clientId;
-        Name = name;
-        Surname = surname;
-        License = license;
-        Email = email;
     }
 
     public long ClientId { get; }

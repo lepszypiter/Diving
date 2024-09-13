@@ -38,14 +38,6 @@ public class ClientController : ControllerBase
         return Ok(clients);
     }
 
-    [HttpPost]
-    public async Task<ActionResult<ClientDto>> PostClient(NewClientDto newClientDto)
-    {
-        _logger.LogInformation("POST: AddClient");
-        var client = await _addClientCommandHandler.Handle(newClientDto);
-        return CreatedAtAction("GetClient", new { id = client.ClientId }, client);
-    }
-
     [HttpGet("{id}")]
     public async Task<ActionResult<Client>> GetClient(long id)
     {
@@ -53,6 +45,14 @@ public class ClientController : ControllerBase
         var client = await _clientRepository.GetById(id);//_context.Clients.FindAsync(id);
 
         return client ?? (ActionResult<Client>)NotFound();
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<ClientDto>> PostClient(NewClientDto newClientDto)
+    {
+        _logger.LogInformation("POST: AddClient");
+        var client = await _addClientCommandHandler.Handle(newClientDto);
+        return CreatedAtAction("GetClient", new { id = client.ClientId }, client);
     }
 
     [HttpPut("{id}")]

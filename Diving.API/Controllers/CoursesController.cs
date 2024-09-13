@@ -1,7 +1,8 @@
-﻿using Diving.Domain.Models;
-using Diving.Infrastructure;
+﻿using Diving.Application.AddCourse;
+using Diving.Application.GetCourse;
+using Diving.Application.ModifyCourse;
+using Diving.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Diving.API.Controllers;
 
@@ -9,75 +10,79 @@ namespace Diving.API.Controllers;
 [ApiController]
 public class CoursesController : ControllerBase
 {
-    private readonly DivingContext _context;
+    private readonly ICourseRepository _courseRepository;
+    private readonly ILogger _logger;
+    private readonly GetCoursesQueryHandler _getCoursesQueryHandler;
+    private readonly AddCourseCommandHandler _addCourseCommandHandler;
+    private readonly ModifyCourseCommandHandler _modifyCourseCommandHandler;
 
-    public CoursesController(DivingContext context)
+    public CoursesController(
+        ICourseRepository courseRepository,
+        ILogger<CoursesController> logger,
+        GetCoursesQueryHandler getCoursesQueryHandler,
+        AddCourseCommandHandler addCourseCommandHandler,
+        ModifyCourseCommandHandler modifyCourseCommandHandler)
     {
-        _context = context;
+        _getCoursesQueryHandler = getCoursesQueryHandler;
+        _addCourseCommandHandler = addCourseCommandHandler;
+        _modifyCourseCommandHandler = modifyCourseCommandHandler;
+        _courseRepository = courseRepository;
+        _logger = logger;
     }
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Course>>> GetCourses()
     {
-        return await _context.Courses.ToListAsync();
+        _logger.LogInformation("GET: GetAllCourses");
+        var courses = await _getCoursesQueryHandler.Handle();
+        return Ok(courses);
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Course>> GetCourse(long id)
     {
-        var course = await _context.Courses.FindAsync(id);
+        _logger.LogInformation("GET: GetCourseWithId");
+        var course = await _courseRepository.GetById(id);
 
         return course ?? (ActionResult<Course>)NotFound();
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> PutCourse(long id, Course course)
+    [HttpPost]
+    public async Task<ActionResult<Course>> PostCourse(NewCourseDto newCourseDto)
     {
-        if (id != course.CourseId)
-        {
-            return BadRequest();
-        }
+        _logger.LogInformation("POST: AddCourse");
+        var course = await _addCourseCommandHandler.Handle(newCourseDto);
+        return CreatedAtAction("GetCourse", new { id = course.CourseId }, course);
+    }
 
-        _context.Entry(course).State = EntityState.Modified;
-
+    [HttpPut("{id}")]
+    public async Task<IActionResult> PutCourse(ModifyCourseDto dto)
+    {
+        _logger.LogInformation("PUT: ModifyCourse");
         try
         {
-            await _context.SaveChangesAsync();
+            var result = await _modifyCourseCommandHandler.Handle(dto);
+            return Ok(result);
         }
-        catch (DbUpdateConcurrencyException) when (!CourseExists(id))
+        catch (ArgumentException)
         {
             return NotFound();
         }
-
-        return NoContent();
-    }
-
-    [HttpPost]
-    public async Task<ActionResult<Course>> PostCourse(Course course)
-    {
-        _context.Courses.Add(course);
-        await _context.SaveChangesAsync();
-
-        return CreatedAtAction("GetCourse", new { id = course.CourseId }, course);
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCourse(long id)
     {
-        var course = await _context.Courses.FindAsync(id);
+        _logger.LogInformation("DELETE: DeleteCourseWithID");
+        var course = await _courseRepository.GetById(id);
         if (course == null)
         {
             return NotFound();
         }
 
-        _context.Courses.Remove(course);
-        await _context.SaveChangesAsync();
+        _courseRepository.Remove(course);
+        await _courseRepository.Save();
 
         return NoContent();
-    }
-
-    private bool CourseExists(long id)
-    {
-        return _context.Courses.Any(e => e.CourseId == id);
     }
 }
