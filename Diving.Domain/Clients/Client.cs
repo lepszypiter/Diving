@@ -1,6 +1,8 @@
-﻿namespace Diving.Domain.Models;
+﻿using Diving.Domain.BuildingBlocks;
 
-public class Client
+namespace Diving.Domain.Clients;
+
+public class Client : Entity
 {
     internal Client(long clientId, string? name, string? surname, string? license, string? email)
     {
@@ -17,12 +19,10 @@ public class Client
 
     public static Client CreateNewClient(string name, string surname, string email)
     {
-        if (email.Contains('@'))
-        {
-            return new Client(0, name, surname, null, email);
-        }
+        CheckRule(new ClientHaveValidEmailRule(email));
+        CheckRule(new ClientHaveValidNameAndSurnameRule(name, surname));
 
-        throw new ArgumentException("Email is not valid");
+        return new Client(0, name, surname, null, email);
     }
 
     public long ClientId { get; }

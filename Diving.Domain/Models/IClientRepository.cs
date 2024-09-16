@@ -1,4 +1,6 @@
-﻿namespace Diving.Domain.Models;
+﻿using Diving.Domain.Clients;
+
+namespace Diving.Domain.Models;
 
 public interface IClientRepository
 {

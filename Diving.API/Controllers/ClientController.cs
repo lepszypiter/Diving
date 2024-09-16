@@ -1,6 +1,7 @@
 using Diving.Application.AddClient;
 using Diving.Application.GetClients;
 using Diving.Application.ModifyClients;
+using Diving.Domain.Clients;
 using Diving.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 

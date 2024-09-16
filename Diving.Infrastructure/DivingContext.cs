@@ -1,3 +1,4 @@
+using Diving.Domain.Clients;
 using Diving.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 

@@ -8,5 +8,6 @@
   </PropertyGroup>
     <ItemGroup>
         <InternalsVisibleTo Include="Diving.Application.Tests" />
+        <InternalsVisibleTo Include="Diving.Domain.Tests" />
     </ItemGroup>
 </Project>
