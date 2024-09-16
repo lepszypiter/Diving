@@ -2,8 +2,9 @@
 
 public class Course
 {
-    internal Course(string? name, string? instructor, int? hoursOnOpenWater, int? hoursOnPool, int? hoursOfLectures, decimal? price)
+    internal Course(long courseId, string? name, string? instructor, int? hoursOnOpenWater, int? hoursOnPool, int? hoursOfLectures, decimal? price)
     {
+        CourseId = courseId;
         Name = name;
         Instructor = instructor;
         HoursOnOpenWater = hoursOnOpenWater;
@@ -18,7 +19,7 @@ public class Course
 
     public static Course CreateNewCourse(string? name, string? instructor, int? hoursOnOpenWater, int? hoursOnPool, int? hoursOfLectures, decimal? price)
     {
-        return new(name, instructor, hoursOnOpenWater, hoursOnPool, hoursOfLectures, price);
+        return new(0, name, instructor, hoursOnOpenWater, hoursOnPool, hoursOfLectures, price);
     }
 
     public long CourseId { get; set; }
@@ -29,8 +30,13 @@ public class Course
     public int? HoursOfLectures { get; private set; }
     public decimal? Price { get; private set; }
 
-    public void ModifyCourseData(string name)
+    public void ModifyCourseData(string? name, string? instructor, int? hoursOnOpenWater, int? hoursOnPool, int? hoursOfLectures, decimal? price)
     {
         Name = name;
+        Instructor = instructor;
+        HoursOnOpenWater = hoursOnOpenWater;
+        HoursOnPool = hoursOnPool;
+        HoursOfLectures = hoursOfLectures;
+        Price = price;
     }
 }
