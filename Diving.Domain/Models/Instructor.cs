@@ -2,7 +2,7 @@
 
 public class Instructor
 {
-    internal Instructor(long instructorId, string? name, string? surname)
+    internal Instructor(long instructorId, string name, string surname)
     {
         InstructorId = instructorId;
         Name = name;
@@ -19,8 +19,8 @@ public class Instructor
     }
 
     public long InstructorId { get; set; }
-    public string? Name { get; private set; }
-    public string? Surname { get; private set; }
+    public string Name { get; private set; } = null!;
+    public string Surname { get; private set; } = null!;
 
     public void ModifyInstructorData(string name, string surname)
     {

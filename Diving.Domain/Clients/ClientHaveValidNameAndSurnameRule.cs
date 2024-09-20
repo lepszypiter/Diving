@@ -6,13 +6,13 @@ public class ClientHaveValidNameAndSurnameRule : IBusinessRule
 {
     private readonly string _name, _surname;
 
-    public ClientHaveValidNameAndSurnameRule(string name, string surname)
+    internal ClientHaveValidNameAndSurnameRule(string name, string surname)
     {
         _name = name;
         _surname = surname;
     }
 
-    public bool IsBroken() => _name.Length >= 2 && _surname.Length >= 2;
+    public bool IsBroken() => _name.Length <= 2 && _surname.Length <= 2;
 
     public string Message => "Name or surname is not valid";
 }

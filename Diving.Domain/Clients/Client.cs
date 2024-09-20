@@ -4,7 +4,7 @@ namespace Diving.Domain.Clients;
 
 public class Client : Entity
 {
-    internal Client(long clientId, string? name, string? surname, string? license, string? email)
+    internal Client(long clientId, string name, string surname, string? license, string email)
     {
         ClientId = clientId;
         Name = name;
@@ -26,10 +26,10 @@ public class Client : Entity
     }
 
     public long ClientId { get; }
-    public string? Name { get; private set; }
-    public string? Surname { get; private set;  }
+    public string Name { get; private set; } = null!;
+    public string Surname { get; private set;  } = null!;
     public string? License { get; }
-    public string? Email { get; private set; }
+    public string Email { get; private set; } = null!;
 
     public void ModifyClientData(string name, string surname)
     {

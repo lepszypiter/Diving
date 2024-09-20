@@ -11,6 +11,10 @@ public class DivingContext : DbContext
     {
     }
 
+    public DivingContext()
+    {
+    }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlite("Data Source=C:\\DB\\diving.db");
 

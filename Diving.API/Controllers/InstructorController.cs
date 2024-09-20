@@ -14,18 +14,18 @@ public class InstructorController : ControllerBase
     private readonly ILogger _logger;
     private readonly GetInstructorsQueryHandler _getInstructorsQueryHandler;
     private readonly AddInstructorCommandHandler _addInstructorCommandHandler;
-    private readonly ModifyInstructorCommandHandler _modifyInstructorCommandHandler;
+    private readonly ModifyInstructorsCommandHandler _modifyInstructorsCommandHandler;
 
     public InstructorController(
         IInstructorRepository InstructorRepository,
         ILogger<InstructorController> logger,
         GetInstructorsQueryHandler getClientsQueryHandler,
         AddInstructorCommandHandler addClientCommandHandler,
-        ModifyInstructorCommandHandler modifyClientsCommandHandler)
+        ModifyInstructorsCommandHandler modifyClientsCommandHandler)
     {
         _getInstructorsQueryHandler = getClientsQueryHandler;
         _addInstructorCommandHandler = addClientCommandHandler;
-        _modifyInstructorCommandHandler = modifyClientsCommandHandler;
+        _modifyInstructorsCommandHandler = modifyClientsCommandHandler;
         _InstructorRepository = InstructorRepository;
         _logger = logger;
     }
@@ -62,7 +62,7 @@ public class InstructorController : ControllerBase
 
         try
         {
-            var result = await _modifyInstructorCommandHandler.Handle(dto);
+            var result = await _modifyInstructorsCommandHandler.Handle(dto);
             return Ok(result);
         }
         catch (ArgumentException)

@@ -8,24 +8,24 @@ namespace Diving.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class CoursesController : ControllerBase
+public class CourseController : ControllerBase
 {
     private readonly ICourseRepository _courseRepository;
     private readonly ILogger _logger;
     private readonly GetCoursesQueryHandler _getCoursesQueryHandler;
     private readonly AddCourseCommandHandler _addCourseCommandHandler;
-    private readonly ModifyCourseCommandHandler _modifyCourseCommandHandler;
+    private readonly ModifyCoursesCommandHandler _modifyCoursesCommandHandler;
 
-    public CoursesController(
+    public CourseController(
         ICourseRepository courseRepository,
-        ILogger<CoursesController> logger,
+        ILogger<CourseController> logger,
         GetCoursesQueryHandler getCoursesQueryHandler,
         AddCourseCommandHandler addCourseCommandHandler,
-        ModifyCourseCommandHandler modifyCourseCommandHandler)
+        ModifyCoursesCommandHandler modifyCoursesCommandHandler)
     {
         _getCoursesQueryHandler = getCoursesQueryHandler;
         _addCourseCommandHandler = addCourseCommandHandler;
-        _modifyCourseCommandHandler = modifyCourseCommandHandler;
+        _modifyCoursesCommandHandler = modifyCoursesCommandHandler;
         _courseRepository = courseRepository;
         _logger = logger;
     }
@@ -61,7 +61,7 @@ public class CoursesController : ControllerBase
         _logger.LogInformation("PUT: ModifyCourse");
         try
         {
-            var result = await _modifyCourseCommandHandler.Handle(dto);
+            var result = await _modifyCoursesCommandHandler.Handle(dto);
             return Ok(result);
         }
         catch (ArgumentException)

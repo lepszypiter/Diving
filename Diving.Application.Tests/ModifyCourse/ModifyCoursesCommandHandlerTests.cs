@@ -6,7 +6,7 @@ using Moq;
 
 namespace Diving.Application.Tests.ModifyCourse;
 
-public class ModifyCourseCommandHandlerTests
+public class ModifyCoursesCommandHandlerTests
 {
     private static readonly Fixture Fixture = new();
 
@@ -18,7 +18,7 @@ public class ModifyCourseCommandHandlerTests
 
         var courseRepositoryMock = new Mock<ICourseRepository>();
         courseRepositoryMock.Setup(x => x.GetById(modifyCourseDto.CourseId)).ReturnsAsync(CreateFakeCourse(modifyCourseDto.CourseId));
-        var handler = new ModifyCourseCommandHandler(courseRepositoryMock.Object);
+        var handler = new ModifyCoursesCommandHandler(courseRepositoryMock.Object);
 
         // Act
         var result = await handler.Handle(modifyCourseDto);
@@ -35,7 +35,7 @@ public class ModifyCourseCommandHandlerTests
 
         var courseRepositoryMock = new Mock<ICourseRepository>();
         courseRepositoryMock.Setup(x => x.GetById(modifyCourseDto.CourseId)).ReturnsAsync(CreateFakeCourse(modifyCourseDto.CourseId));
-        var handler = new ModifyCourseCommandHandler(courseRepositoryMock.Object);
+        var handler = new ModifyCoursesCommandHandler(courseRepositoryMock.Object);
 
         // Act
         await handler.Handle(modifyCourseDto);
@@ -52,7 +52,7 @@ public class ModifyCourseCommandHandlerTests
 
         var courseRepositoryMock = new Mock<ICourseRepository>();
 
-        var handler = new ModifyCourseCommandHandler(courseRepositoryMock.Object);
+        var handler = new ModifyCoursesCommandHandler(courseRepositoryMock.Object);
 
         // Act
         Func<Task> act = async () => await handler.Handle(modifyCourseDto);

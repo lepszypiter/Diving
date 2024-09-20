@@ -13,5 +13,7 @@ public static class DivingInfrastructure
            opt.UseSqlite("Data Source=C:\\DB\\diving.db"));
 
         services.AddScoped<IClientRepository, ClientRepository>();
+        services.AddScoped<IInstructorRepository, InstructorRepository>();
+        services.AddScoped<ICourseRepository, CourseRepository>();
     }
 }

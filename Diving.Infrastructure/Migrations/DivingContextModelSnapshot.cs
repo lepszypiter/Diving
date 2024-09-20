@@ -17,25 +17,22 @@ namespace Diving.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.1");
 
-            modelBuilder.Entity("Diving.Domain.Models.Client", b =>
+            modelBuilder.Entity("Diving.Domain.Clients.Client", b =>
                 {
                     b.Property<long>("ClientId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("ClientCourses")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Email")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("License")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Surname")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("ClientId");
