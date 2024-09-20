@@ -3,6 +3,7 @@ using Diving.Application.GetClients;
 using Diving.Application.ModifyClients;
 using Diving.Domain.Clients;
 using Diving.Domain.Models;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Diving.API.Controllers;
@@ -13,20 +14,20 @@ public class ClientController : ControllerBase
 {
     private readonly IClientRepository _clientRepository;
     private readonly ILogger _logger;
+    private readonly ISender _sender;
     private readonly GetClientsQueryHandler _getClientsQueryHandler;
-    private readonly AddClientCommandHandler _addClientCommandHandler;
     private readonly ModifyClientsCommandHandler _modifyClientsCommandHandler;
 
     public ClientController(
         IClientRepository clientRepository,
         ILogger<ClientController> logger,
         GetClientsQueryHandler getClientsQueryHandler,
-        AddClientCommandHandler addClientCommandHandler,
-        ModifyClientsCommandHandler modifyClientsCommandHandler)
+        ModifyClientsCommandHandler modifyClientsCommandHandler,
+        ISender sender)
     {
         _getClientsQueryHandler = getClientsQueryHandler;
-        _addClientCommandHandler = addClientCommandHandler;
         _modifyClientsCommandHandler = modifyClientsCommandHandler;
+        _sender = sender;
         _clientRepository = clientRepository;
         _logger = logger;
     }
@@ -49,10 +50,11 @@ public class ClientController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<ClientDto>> PostClient(NewClientDto newClientDto)
+    public async Task<ActionResult<ClientDto>> PostClient(NewClientDto newClientDto, CancellationToken cancellationToken)
     {
         _logger.LogInformation("POST: AddClient");
-        var client = await _addClientCommandHandler.Handle(newClientDto);
+        var client = await _sender.Send(new AddClientCommand(newClientDto.Name, newClientDto.Surname, newClientDto.Email), cancellationToken);
+        //var client = await _addClientCommandHandler.Handle(newClientDto);
         return CreatedAtAction("GetClient", new { id = client.ClientId }, client);
     }
 
