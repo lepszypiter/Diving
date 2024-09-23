@@ -3,6 +3,7 @@ using Diving.Application.GetInstructor;
 using Diving.Application.ModifyInstructor;
 using Diving.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
+using MediatR;
 
 namespace Diving.API.Controllers;
 
@@ -12,20 +13,20 @@ public class InstructorController : ControllerBase
 {
     private readonly IInstructorRepository _InstructorRepository;
     private readonly ILogger _logger;
+    private readonly ISender _sender;
     private readonly GetInstructorsQueryHandler _getInstructorsQueryHandler;
-    private readonly AddInstructorCommandHandler _addInstructorCommandHandler;
     private readonly ModifyInstructorsCommandHandler _modifyInstructorsCommandHandler;
 
     public InstructorController(
         IInstructorRepository InstructorRepository,
         ILogger<InstructorController> logger,
         GetInstructorsQueryHandler getClientsQueryHandler,
-        AddInstructorCommandHandler addClientCommandHandler,
-        ModifyInstructorsCommandHandler modifyClientsCommandHandler)
+        ModifyInstructorsCommandHandler modifyClientsCommandHandler,
+        ISender sender)
     {
         _getInstructorsQueryHandler = getClientsQueryHandler;
-        _addInstructorCommandHandler = addClientCommandHandler;
         _modifyInstructorsCommandHandler = modifyClientsCommandHandler;
+        _sender = sender;
         _InstructorRepository = InstructorRepository;
         _logger = logger;
     }
@@ -48,10 +49,10 @@ public class InstructorController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Instructor>> PostInstructor(NewInstructorDto newInstructorDto)
+    public async Task<ActionResult<InstructorDto>> PostInstructor(NewInstructorDto newInstructorDto, CancellationToken cancellationToken)
     {
         _logger.LogInformation("POST: AddInstructor");
-        var instructor = await _addInstructorCommandHandler.Handle(newInstructorDto);
+        var instructor = await _sender.Send(new AddInstructorCommand(newInstructorDto.Name, newInstructorDto.Surname), cancellationToken);
         return CreatedAtAction("GetInstructor", new { id = instructor.InstructorId }, instructor);
     }
 

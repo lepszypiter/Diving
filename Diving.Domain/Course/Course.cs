@@ -1,6 +1,8 @@
-﻿namespace Diving.Domain.Models;
+﻿using Diving.Domain.BuildingBlocks;
 
-public class Course
+namespace Diving.Domain.Models;
+
+public class Course : Entity
 {
     internal Course(long courseId, string name, string instructor, int? hoursOnOpenWater, int? hoursOnPool, int? hoursOfLectures, decimal? price)
     {
@@ -22,7 +24,7 @@ public class Course
         return new(0, name, instructor, hoursOnOpenWater, hoursOnPool, hoursOfLectures, price);
     }
 
-    public long CourseId { get; set; }
+    public long CourseId { get;}
     public string Name { get; private set; } = null!;
     public string Instructor { get; private set; } = null!;
     public int? HoursOnOpenWater { get; private set; }

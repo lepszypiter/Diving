@@ -2,6 +2,7 @@
 using Diving.Application.GetCourse;
 using Diving.Application.ModifyCourse;
 using Diving.Domain.Models;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Diving.API.Controllers;
@@ -12,20 +13,20 @@ public class CourseController : ControllerBase
 {
     private readonly ICourseRepository _courseRepository;
     private readonly ILogger _logger;
+    private readonly ISender _sender;
     private readonly GetCoursesQueryHandler _getCoursesQueryHandler;
-    private readonly AddCourseCommandHandler _addCourseCommandHandler;
     private readonly ModifyCoursesCommandHandler _modifyCoursesCommandHandler;
 
     public CourseController(
         ICourseRepository courseRepository,
         ILogger<CourseController> logger,
         GetCoursesQueryHandler getCoursesQueryHandler,
-        AddCourseCommandHandler addCourseCommandHandler,
-        ModifyCoursesCommandHandler modifyCoursesCommandHandler)
+        ModifyCoursesCommandHandler modifyCoursesCommandHandler,
+        ISender sender)
     {
         _getCoursesQueryHandler = getCoursesQueryHandler;
-        _addCourseCommandHandler = addCourseCommandHandler;
         _modifyCoursesCommandHandler = modifyCoursesCommandHandler;
+        _sender = sender;
         _courseRepository = courseRepository;
         _logger = logger;
     }
@@ -48,10 +49,12 @@ public class CourseController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Course>> PostCourse(NewCourseDto newCourseDto)
+    public async Task<ActionResult<CourseDto>> PostCourse(NewCourseDto newCourseDto, CancellationToken cancellationToken)
     {
         _logger.LogInformation("POST: AddCourse");
-        var course = await _addCourseCommandHandler.Handle(newCourseDto);
+        var course = await _sender.Send(
+            new AddCourseCommand(newCourseDto.Name, newCourseDto.Instructor, newCourseDto.HoursOnOpenWater, newCourseDto.HoursOnPool, newCourseDto.HoursOfLectures, newCourseDto.Price),
+            cancellationToken);
         return CreatedAtAction("GetCourse", new { id = course.CourseId }, course);
     }
 

@@ -1,6 +1,8 @@
-﻿namespace Diving.Domain.Models;
+﻿using Diving.Domain.BuildingBlocks;
 
-public class Instructor
+namespace Diving.Domain.Models;
+
+public class Instructor : Entity
 {
     internal Instructor(long instructorId, string name, string surname)
     {
@@ -18,7 +20,7 @@ public class Instructor
         return new(0, name, surname);
     }
 
-    public long InstructorId { get; set; }
+    public long InstructorId { get;}
     public string Name { get; private set; } = null!;
     public string Surname { get; private set; } = null!;
 

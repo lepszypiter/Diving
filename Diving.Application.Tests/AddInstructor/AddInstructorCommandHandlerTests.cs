@@ -14,14 +14,14 @@ public class AddInstructorCommandHandlerTests
     public async Task ShouldReturnInstructor_WhenInstructorAdded()
     {
         // Arrange
-        var newInstructorDto = CreateFakeNewInstructorDto();
+        var newInstructorDto = CreateFakeAddInstructorCommand();
 
         var instructorRepositoryMock = new Mock<IInstructorRepository>();
 
         var handler = new AddInstructorCommandHandler(instructorRepositoryMock.Object);
 
         // Act
-        var result = await handler.Handle(newInstructorDto);
+        var result = await handler.Handle(newInstructorDto, CancellationToken.None);
 
         // Assert
         result.Should().BeEquivalentTo(newInstructorDto, x => x.ExcludingMissingMembers());
@@ -31,21 +31,21 @@ public class AddInstructorCommandHandlerTests
     public async Task ShouldSaveDataInRepository_WhenNewInstructorIsAdded()
     {
         // Arrange
-        var newInstructorDto = CreateFakeNewInstructorDto();
+        var newInstructorDto = CreateFakeAddInstructorCommand();
 
         var instructorRepositoryMock = new Mock<IInstructorRepository>();
 
         var handler = new AddInstructorCommandHandler(instructorRepositoryMock.Object);
 
         // Act
-        await handler.Handle(newInstructorDto);
+        await handler.Handle(newInstructorDto, CancellationToken.None);
 
         // Assert
         instructorRepositoryMock.Verify(x => x.Add(It.IsAny<Instructor>()), Times.Once);
         instructorRepositoryMock.Verify(x => x.Save(), Times.Once);
     }
 
-    private static NewInstructorDto CreateFakeNewInstructorDto()
+    private static AddInstructorCommand CreateFakeAddInstructorCommand()
     {
         return new(
             Fixture.Create<string>(),
