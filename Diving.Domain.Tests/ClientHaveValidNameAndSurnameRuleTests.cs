@@ -21,6 +21,36 @@ public class ClientHaveValidNameAndSurnameRuleTests
     }
 
     [Fact]
+    public void ClientHaveValidNameAndSurnameRule_ShouldBeBroken_WhenSurnameIsInvalid()
+    {
+        // Arrange
+        const string name = "Joe";
+        const string surname = "D";
+        var rule = new ClientHaveValidNameAndSurnameRule(name, surname);
+
+        // Act
+        var isBroken = rule.IsBroken();
+
+        // Assert
+        isBroken.Should().BeTrue();
+    }
+
+    [Fact]
+    public void ClientHaveValidNameAndSurnameRule_ShouldBeBroken_WhenNameAndSurnameIsInvalid()
+    {
+        // Arrange
+        const string name = "J";
+        const string surname = "D";
+        var rule = new ClientHaveValidNameAndSurnameRule(name, surname);
+
+        // Act
+        var isBroken = rule.IsBroken();
+
+        // Assert
+        isBroken.Should().BeTrue();
+    }
+
+    [Fact]
     public void ClientHaveValidNameAndSurnameRuleMessage_ShouldNotBeEmpty_WhenRuleIsBroken()
     {
         // Arrange

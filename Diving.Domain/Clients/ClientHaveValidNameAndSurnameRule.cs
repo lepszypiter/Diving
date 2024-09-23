@@ -12,7 +12,7 @@ public class ClientHaveValidNameAndSurnameRule : IBusinessRule
         _surname = surname;
     }
 
-    public bool IsBroken() => _name.Length <= 2 && _surname.Length <= 2;
+    public bool IsBroken() => _name.Length <= 2 || _surname.Length <= 2;
 
     public string Message => "Name or surname is not valid";
 }

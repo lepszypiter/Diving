@@ -15,14 +15,14 @@ public class AddClientCommandHandlerTests
     public async Task ShouldReturnClient_WhenClientAdded()
     {
         // Arrange
-        var newClientDto = CreateFakeNewClientDto();
+        var newClientDto = CreateFakeAddClientCommand();
 
         var clientRepositoryMock = new Mock<IClientRepository>();
 
         var handler = new AddClientCommandHandler(clientRepositoryMock.Object);
 
         // Act
-        var result = await handler.Handle(newClientDto);
+        var result = await handler.Handle(newClientDto, CancellationToken.None);
 
         // Assert
         result.Should().BeEquivalentTo(newClientDto, x => x.ExcludingMissingMembers());
@@ -32,21 +32,21 @@ public class AddClientCommandHandlerTests
     public async Task ShouldSaveDataInRepository_WhenNewClientIsAdded()
     {
         // Arrange
-        var newClientDto = CreateFakeNewClientDto();
+        var newClientDto = CreateFakeAddClientCommand();
 
         var clientRepositoryMock = new Mock<IClientRepository>();
 
         var handler = new AddClientCommandHandler(clientRepositoryMock.Object);
 
         // Act
-        await handler.Handle(newClientDto);
+        await handler.Handle(newClientDto, CancellationToken.None);
 
         // Assert
         clientRepositoryMock.Verify(x => x.Add(It.IsAny<Client>()), Times.Once);
         clientRepositoryMock.Verify(x => x.Save(), Times.Once);
     }
 
-    private static NewClientDto CreateFakeNewClientDto()
+    private static AddClientCommand CreateFakeAddClientCommand()
     {
         return new(
             Fixture.Create<string>(),
