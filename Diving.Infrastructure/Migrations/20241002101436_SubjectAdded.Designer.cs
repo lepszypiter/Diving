@@ -3,16 +3,19 @@ using System;
 using Diving.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Diving.Migrations
+namespace Diving.Infrastructure.Migrations
 {
     [DbContext(typeof(DivingContext))]
-    partial class DivingContextModelSnapshot : ModelSnapshot
+    [Migration("20241002101436_SubjectAdded")]
+    partial class SubjectAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.1");
@@ -37,7 +40,7 @@ namespace Diving.Migrations
 
                     b.HasKey("ClientId");
 
-                    b.ToTable("Clients", (string)null);
+                    b.ToTable("Clients");
                 });
 
             modelBuilder.Entity("Diving.Domain.Models.ClientWithCourse", b =>
@@ -54,7 +57,7 @@ namespace Diving.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ClientWithCourses", (string)null);
+                    b.ToTable("ClientWithCourses");
                 });
 
             modelBuilder.Entity("Diving.Domain.Models.Course", b =>
@@ -85,7 +88,7 @@ namespace Diving.Migrations
 
                     b.HasKey("CourseId");
 
-                    b.ToTable("Courses", (string)null);
+                    b.ToTable("Courses");
                 });
 
             modelBuilder.Entity("Diving.Domain.Models.Instructor", b =>
@@ -104,7 +107,7 @@ namespace Diving.Migrations
 
                     b.HasKey("InstructorId");
 
-                    b.ToTable("Instructors", (string)null);
+                    b.ToTable("Instructors");
                 });
 
             modelBuilder.Entity("Diving.Domain.Subject", b =>
@@ -124,7 +127,7 @@ namespace Diving.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("Subject", (string)null);
+                    b.ToTable("Subject");
                 });
 
             modelBuilder.Entity("Diving.Domain.Subject", b =>

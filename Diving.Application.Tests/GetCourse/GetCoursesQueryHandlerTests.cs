@@ -60,6 +60,7 @@ public class GetCoursesQueryHandlerTests
             Fixture.Create<int>(),
             Fixture.Create<int>(),
             Fixture.Create<int>(),
-            Fixture.Create<decimal>());
+            Fixture.Create<decimal>(),
+            null);
     }
 }
