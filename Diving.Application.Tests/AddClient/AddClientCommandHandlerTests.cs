@@ -18,8 +18,9 @@ public class AddClientCommandHandlerTests
         var newClientDto = CreateFakeAddClientCommand();
 
         var clientRepositoryMock = new Mock<IClientRepository>();
+        var unitOfWorkMock = new Mock<IUnitOfWork>();
 
-        var handler = new AddClientCommandHandler(clientRepositoryMock.Object);
+        var handler = new AddClientCommandHandler(clientRepositoryMock.Object, unitOfWorkMock.Object);
 
         // Act
         var result = await handler.Handle(newClientDto, CancellationToken.None);
@@ -35,15 +36,16 @@ public class AddClientCommandHandlerTests
         var newClientDto = CreateFakeAddClientCommand();
 
         var clientRepositoryMock = new Mock<IClientRepository>();
+        var unitOfWorkMock = new Mock<IUnitOfWork>();
 
-        var handler = new AddClientCommandHandler(clientRepositoryMock.Object);
+        var handler = new AddClientCommandHandler(clientRepositoryMock.Object, unitOfWorkMock.Object);
 
         // Act
         await handler.Handle(newClientDto, CancellationToken.None);
 
         // Assert
         clientRepositoryMock.Verify(x => x.Add(It.IsAny<Client>()), Times.Once);
-        clientRepositoryMock.Verify(x => x.Save(), Times.Once);
+        unitOfWorkMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
     }
 
     private static AddClientCommand CreateFakeAddClientCommand()

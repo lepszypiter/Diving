@@ -15,10 +15,10 @@ public class ClientController : ControllerBase
     private readonly IClientRepository _clientRepository;
     private readonly ILogger _logger;
     private readonly ISender _sender;
-    private readonly GetClientsQueryHandler _getClientsQueryHandler;
-    private readonly ModifyClientsCommandHandler _modifyClientsCommandHandler;
+    internal readonly GetClientsQueryHandler _getClientsQueryHandler;
+    internal readonly ModifyClientsCommandHandler _modifyClientsCommandHandler;
 
-    public ClientController(
+    internal ClientController(
         IClientRepository clientRepository,
         ILogger<ClientController> logger,
         GetClientsQueryHandler getClientsQueryHandler,
@@ -54,18 +54,18 @@ public class ClientController : ControllerBase
     {
         _logger.LogInformation("POST: AddClient");
         var client = await _sender.Send(new AddClientCommand(newClientDto.Name, newClientDto.Surname, newClientDto.Email), cancellationToken);
-        //var client = await _addClientCommandHandler.Handle(newClientDto);
+
         return CreatedAtAction("GetClient", new { id = client.ClientId }, client);
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<Client>> PutClient(ModifyClientDto dto)
+    public async Task<ActionResult<Client>> PutClient(ModifyClientDto dto, CancellationToken cancellationToken)
     {
         _logger.LogInformation("PUT: ChangeClient");
 
         try
         {
-           var result =  await _modifyClientsCommandHandler.Handle(dto);
+           var result =  await _modifyClientsCommandHandler.Handle(dto, cancellationToken);
            return Ok(result);
         }
         catch (ArgumentException)
@@ -85,7 +85,7 @@ public class ClientController : ControllerBase
         }
 
         _clientRepository.Remove(client);
-        await _clientRepository.Save();
+        //await _clientRepository.Save();
 
         return NoContent();
     }

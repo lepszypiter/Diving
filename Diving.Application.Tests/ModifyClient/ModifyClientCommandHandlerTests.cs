@@ -10,6 +10,16 @@ namespace Diving.Application.Tests.ModifyClient;
 public class ModifyClientsCommandHandlerTests
 {
     private static readonly Fixture Fixture = new();
+    private readonly Mock<IClientRepository> _clientRepositoryMock;
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+    private readonly ModifyClientsCommandHandler _handler;
+
+    public ModifyClientsCommandHandlerTests()
+    {
+        _clientRepositoryMock = new Mock<IClientRepository>();
+        _unitOfWorkMock = new Mock<IUnitOfWork>();
+        _handler = new ModifyClientsCommandHandler(_clientRepositoryMock.Object, _unitOfWorkMock.Object);
+    }
 
     [Fact]
     public async Task ShouldReturnModifiedClient_WhenClientChanged()
@@ -17,12 +27,10 @@ public class ModifyClientsCommandHandlerTests
         // Arrange
         var modifyClientDto = CreateFakeNewClientDto();
 
-        var clientRepositoryMock = new Mock<IClientRepository>();
-        clientRepositoryMock.Setup(x => x.GetById(modifyClientDto.ClientId)).ReturnsAsync(CreateFakeClient(modifyClientDto.ClientId));
-        var handler = new ModifyClientsCommandHandler(clientRepositoryMock.Object);
+        _clientRepositoryMock.Setup(x => x.GetById(modifyClientDto.ClientId)).ReturnsAsync(CreateFakeClient(modifyClientDto.ClientId));
 
         // Act
-        var result = await handler.Handle(modifyClientDto);
+        var result = await _handler.Handle(modifyClientDto, CancellationToken.None);
 
         // Assert
         result.Should().BeEquivalentTo(modifyClientDto, x => x.ExcludingMissingMembers());
@@ -34,15 +42,13 @@ public class ModifyClientsCommandHandlerTests
         // Arrange
         var modifyClientDto = CreateFakeNewClientDto();
 
-        var clientRepositoryMock = new Mock<IClientRepository>();
-        clientRepositoryMock.Setup(x => x.GetById(modifyClientDto.ClientId)).ReturnsAsync(CreateFakeClient(modifyClientDto.ClientId));
-        var handler = new ModifyClientsCommandHandler(clientRepositoryMock.Object);
+        _clientRepositoryMock.Setup(x => x.GetById(modifyClientDto.ClientId)).ReturnsAsync(CreateFakeClient(modifyClientDto.ClientId));
 
         // Act
-        await handler.Handle(modifyClientDto);
+        await _handler.Handle(modifyClientDto, CancellationToken.None);
 
         // Assert
-        clientRepositoryMock.Verify(x => x.Save(), Times.Once);
+        _unitOfWorkMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
     }
 
     [Fact]
@@ -51,12 +57,8 @@ public class ModifyClientsCommandHandlerTests
         // Arrange
         var modifyClientDto = CreateFakeNewClientDto();
 
-        var clientRepositoryMock = new Mock<IClientRepository>();
-
-        var handler = new ModifyClientsCommandHandler(clientRepositoryMock.Object);
-
         // Act
-        Func<Task> act = async () => await handler.Handle(modifyClientDto);
+        var act = async () => await _handler.Handle(modifyClientDto, CancellationToken.None);
 
         // Assert
         await act.Should().ThrowAsync<ArgumentException>();
