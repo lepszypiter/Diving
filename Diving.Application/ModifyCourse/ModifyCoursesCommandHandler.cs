@@ -1,4 +1,5 @@
-﻿using Diving.Domain.Models;
+﻿using Diving.Domain.Course;
+using Diving.Domain.Models;
 
 namespace Diving.Application.ModifyCourse;
 

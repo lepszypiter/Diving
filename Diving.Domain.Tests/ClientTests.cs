@@ -1,5 +1,4 @@
 using Diving.Domain.BuildingBlocks;
-using Diving.Domain.Clients;
 using FluentAssertions;
 
 namespace Diving.Domain.Tests;
@@ -15,7 +14,7 @@ public class ClientTests
         const string email = "john.doe.com";
 
         // Act
-        var act = () => Client.CreateNewClient(name, surname, email);
+        var act = () => Client.Client.CreateNewClient(name, surname, email);
 
         // Assert
         act.Should().Throw<BusinessRuleValidationException>().WithMessage("Email is not valid");
@@ -30,7 +29,7 @@ public class ClientTests
         const string email = "john.doe@com";
 
         // Act
-        var client = Client.CreateNewClient(name, surname, email);
+        var client = Client.Client.CreateNewClient(name, surname, email);
 
         // Assert
         client.Name.Should().Be(name);

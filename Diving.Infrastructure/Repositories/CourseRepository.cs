@@ -1,4 +1,5 @@
-﻿using Diving.Domain.Models;
+﻿using Diving.Domain.Course;
+using Diving.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -17,7 +18,10 @@ public class CourseRepository : ICourseRepository
 
     public async Task<IReadOnlyCollection<Course>> GetAllCourses()
     {
-        var result = await _context.Courses.Take(15).ToListAsync();
+        var result = await _context.Courses
+            .Include(x => x.Subjects)
+            .Take(15)
+            .ToListAsync();
         _logger.LogTrace("GetAllCourses {Count}",  result.Count);
         return result;
     }
@@ -25,7 +29,10 @@ public class CourseRepository : ICourseRepository
     public async Task<Course?> GetById(long id)
     {
         _logger.LogInformation("Id {}", id);// log id
-        return await _context.Courses.FindAsync(id);
+        return await _context
+            .Courses
+            .Include(x => x.Subjects)
+            .FirstOrDefaultAsync(x => x.CourseId == id);
     }
 
     public async Task Add(Course course)

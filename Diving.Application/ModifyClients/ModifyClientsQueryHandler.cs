@@ -1,4 +1,4 @@
-﻿using Diving.Domain.Clients;
+﻿using Diving.Domain.Client;
 using Diving.Domain.Models;
 
 namespace Diving.Application.ModifyClients;

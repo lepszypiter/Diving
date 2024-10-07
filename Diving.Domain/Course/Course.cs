@@ -1,6 +1,6 @@
 ﻿using Diving.Domain.BuildingBlocks;
 
-namespace Diving.Domain.Models;
+namespace Diving.Domain.Course;
 
 public class Course : Entity
 {

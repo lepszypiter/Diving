@@ -1,4 +1,6 @@
-using Diving.Domain.Clients;
+using Diving.Domain.Client;
+using Diving.Domain.Course;
+using Diving.Domain.Instructor;
 using Diving.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 

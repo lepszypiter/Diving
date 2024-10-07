@@ -1,11 +1,9 @@
-﻿using Diving.Domain.Clients;
-
-namespace Diving.Domain.Models;
+﻿namespace Diving.Domain.Models;
 
 public interface IClientRepository
 {
-    Task<IReadOnlyCollection<Client>> GetAllClients();
-    Task<Client?> GetById(long id);
-    Task Add(Client client);
-    void Remove(Client client);
+    Task<IReadOnlyCollection<Client.Client>> GetAllClients();
+    Task<Client.Client?> GetById(long id);
+    Task Add(Client.Client client);
+    void Remove(Client.Client client);
 }

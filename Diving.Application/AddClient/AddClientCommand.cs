@@ -1,5 +1,5 @@
 ﻿using Diving.Application.Abstarction.Messaging;
-using Diving.Domain.Clients;
+using Diving.Domain.Client;
 
 namespace Diving.Application.AddClient;
 

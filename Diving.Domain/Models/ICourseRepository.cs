@@ -2,9 +2,9 @@
 
 public interface ICourseRepository
 {
-    Task<IReadOnlyCollection<Course>> GetAllCourses();
-    Task<Course?> GetById(long id);
-    Task Add(Course course);
+    Task<IReadOnlyCollection<Course.Course>> GetAllCourses();
+    Task<Course.Course?> GetById(long id);
+    Task Add(Course.Course course);
     Task Save();
-    void Remove(Course course);
+    void Remove(Course.Course course);
 }

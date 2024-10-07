@@ -1,4 +1,4 @@
-﻿using Diving.Domain.Clients;
+﻿using Diving.Domain.Client;
 using FluentAssertions;
 
 namespace Diving.Domain.Tests;

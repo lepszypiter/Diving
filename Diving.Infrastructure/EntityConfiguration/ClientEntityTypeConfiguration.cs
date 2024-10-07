@@ -1,4 +1,4 @@
-﻿using Diving.Domain.Clients;
+﻿using Diving.Domain.Client;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

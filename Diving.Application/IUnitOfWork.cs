@@ -2,8 +2,5 @@
 
 public interface IUnitOfWork
 {
-    public Task SaveChangesAsync(CancellationToken cancellationToken)
-    {
-        return SaveChangesAsync(cancellationToken);
-    }
+    public Task SaveChangesAsync(CancellationToken cancellationToken);
 }

@@ -1,7 +1,7 @@
 using Diving.Application.AddClient;
 using Diving.Application.GetClients;
 using Diving.Application.ModifyClients;
-using Diving.Domain.Clients;
+using Diving.Domain.Client;
 using Diving.Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

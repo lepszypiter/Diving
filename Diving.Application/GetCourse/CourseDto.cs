@@ -1,4 +1,6 @@
-﻿namespace Diving.Application.GetCourse;
+﻿using Diving.Domain.Course;
+
+namespace Diving.Application.GetCourse;
 
 public record CourseDto(
     long CourseId,
@@ -7,4 +9,5 @@ public record CourseDto(
     int? HoursOnOpenWater,
     int? HoursOnPool,
     int? HoursOfLectures,
-    decimal? Price);
+    decimal? Price,
+    IList<Subject> Subjects);

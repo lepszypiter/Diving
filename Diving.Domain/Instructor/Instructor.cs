@@ -1,6 +1,6 @@
 ﻿using Diving.Domain.BuildingBlocks;
 
-namespace Diving.Domain.Models;
+namespace Diving.Domain.Instructor;
 
 public class Instructor : Entity
 {

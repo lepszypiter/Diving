@@ -15,7 +15,7 @@ public class GetCoursesQueryHandler
     {
         var courses = await _repository.GetAllCourses();
         return courses
-            .Select(x => new CourseDto(x.CourseId, x.Name, x.Instructor, x.HoursOnOpenWater, x.HoursOnPool, x.HoursOfLectures, x.Price))
+            .Select(x => new CourseDto(x.CourseId, x.Name, x.Instructor, x.HoursOnOpenWater, x.HoursOnPool, x.HoursOfLectures, x.Price, x.Subjects))
             .ToList();
     }
 }

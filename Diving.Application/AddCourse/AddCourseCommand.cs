@@ -1,4 +1,4 @@
-﻿using Diving.Domain.Models;
+﻿using Diving.Domain.Course;
 using MediatR;
 
 namespace Diving.API.Controllers;

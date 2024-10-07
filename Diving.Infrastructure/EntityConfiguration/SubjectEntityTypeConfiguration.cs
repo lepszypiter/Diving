@@ -1,4 +1,4 @@
-﻿using Diving.Domain;
+﻿using Diving.Domain.Course;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

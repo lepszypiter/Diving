@@ -1,6 +1,7 @@
 ﻿using Diving.Application.AddCourse;
 using Diving.Application.GetCourse;
 using Diving.Application.ModifyCourse;
+using Diving.Domain.Course;
 using Diving.Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

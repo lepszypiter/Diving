@@ -2,9 +2,9 @@
 
 public interface IInstructorRepository
 {
-    Task<IReadOnlyCollection<Instructor>> GetAllInstructors();
-    Task<Instructor?> GetById(long id);
-    Task Add(Instructor instructor);
+    Task<IReadOnlyCollection<Instructor.Instructor>> GetAllInstructors();
+    Task<Instructor.Instructor?> GetById(long id);
+    Task Add(Instructor.Instructor instructor);
     Task Save();
-    void Remove(Instructor instructor);
+    void Remove(Instructor.Instructor instructor);
 }

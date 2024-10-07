@@ -1,4 +1,5 @@
 ﻿using Diving.API.Controllers;
+using Diving.Domain.Course;
 using Diving.Domain.Models;
 using MediatR;
 

@@ -1,6 +1,6 @@
 ﻿using Diving.Domain.BuildingBlocks;
 
-namespace Diving.Domain.Clients;
+namespace Diving.Domain.Client;
 
 public class ClientHaveValidEmailRule : IBusinessRule
 {

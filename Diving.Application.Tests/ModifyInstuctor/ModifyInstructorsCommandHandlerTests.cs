@@ -1,5 +1,6 @@
 ﻿using AutoFixture;
 using Diving.Application.ModifyInstructor;
+using Diving.Domain.Instructor;
 using Diving.Domain.Models;
 using FluentAssertions;
 using Moq;
