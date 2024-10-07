@@ -34,14 +34,14 @@ internal class ClientRepository : IClientRepository
         await _context.Clients.AddAsync(client);
     }
 
+    public Task Delete(long id, CancellationToken cancellationTokent)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task Save()
     {
         var ret = await _context.SaveChangesAsync();
         _logger.LogInformation("Record changed {Count}", ret);// log changed record
-    }
-
-    public void Remove(Client client)
-    {
-        _context.Clients.Remove(client);
     }
 }

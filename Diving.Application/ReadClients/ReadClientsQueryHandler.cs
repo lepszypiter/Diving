@@ -1,5 +1,4 @@
-﻿using Diving.Application.GetClients;
-using Diving.Domain.Models;
+﻿using Diving.Domain.Models;
 using Diving.Application.Abstarction.Messaging;
 
 namespace Diving.Application.ReadClients;

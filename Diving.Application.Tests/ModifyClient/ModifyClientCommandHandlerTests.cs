@@ -1,5 +1,5 @@
 ﻿using AutoFixture;
-using Diving.Application.ModifyClients;
+using Diving.Application.UpdateClient;
 using Diving.Domain.Client;
 using Diving.Domain.Models;
 using FluentAssertions;
@@ -12,20 +12,20 @@ public class ModifyClientsCommandHandlerTests
     private static readonly Fixture Fixture = new();
     private readonly Mock<IClientRepository> _clientRepositoryMock;
     private readonly Mock<IUnitOfWork> _unitOfWorkMock;
-    private readonly ModifyClientsCommandHandler _handler;
+    private readonly UpdateClientCommandHandler _handler;
 
     public ModifyClientsCommandHandlerTests()
     {
         _clientRepositoryMock = new Mock<IClientRepository>();
         _unitOfWorkMock = new Mock<IUnitOfWork>();
-        _handler = new ModifyClientsCommandHandler(_clientRepositoryMock.Object, _unitOfWorkMock.Object);
+        _handler = new UpdateClientCommandHandler(_clientRepositoryMock.Object, _unitOfWorkMock.Object);
     }
 
     [Fact]
     public async Task ShouldReturnModifiedClient_WhenClientChanged()
     {
         // Arrange
-        var modifyClientDto = CreateFakeNewClientDto();
+        var modifyClientDto = CreateUpdateClientCommand();
 
         _clientRepositoryMock.Setup(x => x.GetById(
             modifyClientDto.ClientId,
@@ -43,7 +43,7 @@ public class ModifyClientsCommandHandlerTests
     public async Task ShouldSaveModifiedClient_WhenClientChanged()
     {
         // Arrange
-        var modifyClientDto = CreateFakeNewClientDto();
+        var modifyClientDto = CreateUpdateClientCommand();
 
         _clientRepositoryMock.Setup(x => x.GetById(
             modifyClientDto.ClientId,
@@ -61,7 +61,7 @@ public class ModifyClientsCommandHandlerTests
     public async Task ShouldThrowArgumentException_WhenClientDoesNotExist()
     {
         // Arrange
-        var modifyClientDto = CreateFakeNewClientDto();
+        var modifyClientDto = CreateUpdateClientCommand();
 
         // Act
         var act = async () => await _handler.Handle(modifyClientDto, CancellationToken.None);
@@ -70,7 +70,7 @@ public class ModifyClientsCommandHandlerTests
         await act.Should().ThrowAsync<ArgumentException>();
     }
 
-    private static ModifyClientDto CreateFakeNewClientDto()
+    private static UpdateClientCommand CreateUpdateClientCommand()
     {
         return new(
             Fixture.Create<long>(),

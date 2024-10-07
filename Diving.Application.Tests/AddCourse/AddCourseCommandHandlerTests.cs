@@ -1,5 +1,4 @@
 ﻿using AutoFixture;
-using Diving.API.Controllers;
 using Diving.Application.AddCourse;
 using Diving.Domain.Course;
 using Diving.Domain.Models;

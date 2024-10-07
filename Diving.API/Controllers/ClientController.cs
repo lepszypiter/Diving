@@ -1,13 +1,15 @@
 using Diving.Application.AddClient;
-using Diving.Application.GetClients;
-using Diving.Application.ModifyClients;
+using Diving.Application.DeleteClient;
 using Diving.Application.ReadClients;
+using Diving.Application.UpdateClient;
 using Diving.Domain.Client;
 using Diving.Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using ClientDto = Diving.Application.ReadClients.ClientDto;
 
 namespace Diving.API.Controllers;
+public record UpdateClientRequest(long ClientId, string Name, string Surname);
 
 [Route("api/[controller]")]
 [ApiController]
@@ -16,15 +18,12 @@ public class ClientController : ControllerBase
     private readonly IClientRepository _clientRepository;
     private readonly ILogger _logger;
     private readonly ISender _sender;
-    internal readonly ModifyClientsCommandHandler _modifyClientsCommandHandler;
 
     internal ClientController(
         IClientRepository clientRepository,
         ILogger<ClientController> logger,
-        ModifyClientsCommandHandler modifyClientsCommandHandler,
         ISender sender)
     {
-        _modifyClientsCommandHandler = modifyClientsCommandHandler;
         _sender = sender;
         _clientRepository = clientRepository;
         _logger = logger;
@@ -46,22 +45,22 @@ public class ClientController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<ClientDto>> PostClient(NewClientDto newClientDto, CancellationToken cancellationToken)
+    public async Task<ActionResult<ClientDto>> CreateClient(NewClientRequest newClientRequest, CancellationToken cancellationToken)
     {
         _logger.LogInformation("POST: AddClient");
-        var client = await _sender.Send(new AddClientCommand(newClientDto.Name, newClientDto.Surname, newClientDto.Email), cancellationToken);
+        var client = await _sender.Send(new AddClientCommand(newClientRequest.Name, newClientRequest.Surname, newClientRequest.Email), cancellationToken);
 
         return CreatedAtAction("ReadClient", new { id = client.ClientId }, client);
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<Client>> PutClient(ModifyClientDto dto, CancellationToken cancellationToken)
+    public async Task<ActionResult<Client>> UpdateClient(UpdateClientRequest request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("PUT: ChangeClient");
 
         try
         {
-           var result =  await _modifyClientsCommandHandler.Handle(dto, cancellationToken);
+           var result =  await _sender.Send(new UpdateClientCommand(request.ClientId, request.Name, request.Surname), cancellationToken);
            return Ok(result);
         }
         catch (ArgumentException)
@@ -74,14 +73,7 @@ public class ClientController : ControllerBase
     public async Task<IActionResult> DeleteClient(long id, CancellationToken cancellationToken)
     {
         _logger.LogInformation("DELETE: DeleteClientWithID");
-        var client = await _clientRepository.GetById(id, cancellationToken);
-        if (client == null)
-        {
-            return NotFound();
-        }
-
-        _clientRepository.Remove(client);
-        //await _clientRepository.Save();
+        await _sender.Send(new DeleteClientCommand(id), cancellationToken);
 
         return NoContent();
     }
