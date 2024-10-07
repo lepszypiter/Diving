@@ -1,11 +1,11 @@
 ﻿using Diving.Application.AddClient;
 using Diving.Application.AddInstructor;
-using Diving.Application.GetClients;
 using Diving.Application.GetCourse;
 using Diving.Application.GetInstructor;
 using Diving.Application.ModifyClients;
 using Diving.Application.ModifyCourse;
 using Diving.Application.ModifyInstructor;
+using Diving.Application.ReadClients;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Diving.Application;
@@ -14,7 +14,7 @@ public static class DivingApplication
 {
     public static void RegisterApplicationServices(this IServiceCollection services)
     {
-        services.AddScoped<GetClientsQueryHandler>();
+        services.AddScoped<ReadClientsQueryHandler>();
         services.AddScoped<AddClientCommandHandler>();
         services.AddScoped<ModifyClientsCommandHandler>();
         services.AddScoped<GetInstructorsQueryHandler>();

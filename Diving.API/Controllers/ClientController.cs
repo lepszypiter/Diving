@@ -1,6 +1,7 @@
 using Diving.Application.AddClient;
 using Diving.Application.GetClients;
 using Diving.Application.ModifyClients;
+using Diving.Application.ReadClients;
 using Diving.Domain.Client;
 using Diving.Domain.Models;
 using MediatR;
@@ -15,17 +16,14 @@ public class ClientController : ControllerBase
     private readonly IClientRepository _clientRepository;
     private readonly ILogger _logger;
     private readonly ISender _sender;
-    internal readonly GetClientsQueryHandler _getClientsQueryHandler;
     internal readonly ModifyClientsCommandHandler _modifyClientsCommandHandler;
 
     internal ClientController(
         IClientRepository clientRepository,
         ILogger<ClientController> logger,
-        GetClientsQueryHandler getClientsQueryHandler,
         ModifyClientsCommandHandler modifyClientsCommandHandler,
         ISender sender)
     {
-        _getClientsQueryHandler = getClientsQueryHandler;
         _modifyClientsCommandHandler = modifyClientsCommandHandler;
         _sender = sender;
         _clientRepository = clientRepository;
@@ -33,20 +31,18 @@ public class ClientController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ClientDto>>> GetClients()
+    public async Task<ActionResult<IEnumerable<ClientDto>>> ReadClients(CancellationToken cancellationToken)
     {
         _logger.LogInformation("GET: GetAllClients");
-        var clients = await _getClientsQueryHandler.Handle();
+        var clients = await _sender.Send(new ReadClientsQuery(), cancellationToken);
         return Ok(clients);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Client>> GetClient(long id)
+    public async Task<Application.ReadClient.ClientDto> ReadClient(long id, CancellationToken cancellationToken)
     {
         _logger.LogInformation("GET: GetClientWithId");
-        var client = await _clientRepository.GetById(id);//_context.Clients.FindAsync(id);
-
-        return client ?? (ActionResult<Client>)NotFound();
+        return  await _sender.Send(new Application.ReadClient.ReadClientsQuery(id), cancellationToken);
     }
 
     [HttpPost]
@@ -55,7 +51,7 @@ public class ClientController : ControllerBase
         _logger.LogInformation("POST: AddClient");
         var client = await _sender.Send(new AddClientCommand(newClientDto.Name, newClientDto.Surname, newClientDto.Email), cancellationToken);
 
-        return CreatedAtAction("GetClient", new { id = client.ClientId }, client);
+        return CreatedAtAction("ReadClient", new { id = client.ClientId }, client);
     }
 
     [HttpPut("{id}")]
@@ -75,10 +71,10 @@ public class ClientController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteClient(long id)
+    public async Task<IActionResult> DeleteClient(long id, CancellationToken cancellationToken)
     {
         _logger.LogInformation("DELETE: DeleteClientWithID");
-        var client = await _clientRepository.GetById(id);
+        var client = await _clientRepository.GetById(id, cancellationToken);
         if (client == null)
         {
             return NotFound();

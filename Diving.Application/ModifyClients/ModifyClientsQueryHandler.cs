@@ -16,7 +16,7 @@ public class ModifyClientsCommandHandler
 
     public async Task<Client> Handle(ModifyClientDto modifyClientDto, CancellationToken cancellationToken)
     {
-        var client = await _clientRepository.GetById(modifyClientDto.ClientId);
+        var client = await _clientRepository.GetById(modifyClientDto.ClientId, cancellationToken);
         if (client is null)
         {
             throw new ArgumentException("Client does not exist");

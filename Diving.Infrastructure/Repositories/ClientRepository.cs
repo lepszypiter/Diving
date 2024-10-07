@@ -16,17 +16,17 @@ internal class ClientRepository : IClientRepository
         _logger = logger;
     }
 
-    public async Task<IReadOnlyCollection<Client>> GetAllClients()
+    public async Task<IReadOnlyCollection<Client>> ReadAllClients(CancellationToken cancellationToken)
     {
-        var result = await _context.Clients.Take(15).ToListAsync();
+        var result = await _context.Clients.Take(15).ToListAsync(cancellationToken);
         _logger.LogTrace("GetAllClients {Count}",  result.Count);
         return result;
     }
 
-    public async Task<Client?> GetById(long id)
+    public async Task<Client?> GetById(long id, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Id {}", id);// log id
-        return await _context.Clients.FindAsync(id);
+        return await _context.Clients.FindAsync(id, cancellationToken);
     }
 
     public async Task Add(Client client)

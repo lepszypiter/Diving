@@ -27,7 +27,10 @@ public class ModifyClientsCommandHandlerTests
         // Arrange
         var modifyClientDto = CreateFakeNewClientDto();
 
-        _clientRepositoryMock.Setup(x => x.GetById(modifyClientDto.ClientId)).ReturnsAsync(CreateFakeClient(modifyClientDto.ClientId));
+        _clientRepositoryMock.Setup(x => x.GetById(
+            modifyClientDto.ClientId,
+            It.IsAny<CancellationToken>()))
+            .ReturnsAsync(CreateFakeClient(modifyClientDto.ClientId));
 
         // Act
         var result = await _handler.Handle(modifyClientDto, CancellationToken.None);
@@ -42,7 +45,10 @@ public class ModifyClientsCommandHandlerTests
         // Arrange
         var modifyClientDto = CreateFakeNewClientDto();
 
-        _clientRepositoryMock.Setup(x => x.GetById(modifyClientDto.ClientId)).ReturnsAsync(CreateFakeClient(modifyClientDto.ClientId));
+        _clientRepositoryMock.Setup(x => x.GetById(
+            modifyClientDto.ClientId,
+            It.IsAny<CancellationToken>()))
+            .ReturnsAsync(CreateFakeClient(modifyClientDto.ClientId));
 
         // Act
         await _handler.Handle(modifyClientDto, CancellationToken.None);

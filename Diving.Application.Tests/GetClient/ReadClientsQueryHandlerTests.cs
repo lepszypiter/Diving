@@ -1,5 +1,5 @@
 using AutoFixture;
-using Diving.Application.GetClients;
+using Diving.Application.ReadClients;
 using Diving.Domain.Client;
 using Diving.Domain.Models;
 using FluentAssertions;
@@ -7,7 +7,7 @@ using Moq;
 
 namespace Diving.Application.Tests.GetClient;
 
-public class GetClientsQueryHandlerTests
+public class ReadClientsQueryHandlerTests
 {
     private static readonly Fixture Fixture = new();
 
@@ -22,12 +22,12 @@ public class GetClientsQueryHandlerTests
         };
 
         var clientRepositoryMock = new Mock<IClientRepository>();
-        clientRepositoryMock.Setup(x => x.GetAllClients()).ReturnsAsync(clients);
+        clientRepositoryMock.Setup(x => x.ReadAllClients(It.IsAny<CancellationToken>())).ReturnsAsync(clients);
 
-        var handler = new GetClientsQueryHandler(clientRepositoryMock.Object);
+        var handler = new ReadClientsQueryHandler(clientRepositoryMock.Object);
 
         // Act
-        var result = await handler.Handle();
+        var result = await handler.Handle(new ReadClientsQuery(), CancellationToken.None);
 
         // Assert
         result.Should().HaveCount(2);
@@ -41,12 +41,12 @@ public class GetClientsQueryHandlerTests
         var clients = new List<Client>();
 
         var clientRepositoryMock = new Mock<IClientRepository>();
-        clientRepositoryMock.Setup(x => x.GetAllClients()).ReturnsAsync(clients);
+        clientRepositoryMock.Setup(x => x.ReadAllClients(It.IsAny<CancellationToken>())).ReturnsAsync(clients);
 
-        var handler = new GetClientsQueryHandler(clientRepositoryMock.Object);
+        var handler = new ReadClientsQueryHandler(clientRepositoryMock.Object);
 
         // Act
-        var result = await handler.Handle();
+        var result = await handler.Handle(new ReadClientsQuery(), CancellationToken.None);
 
         // Assert
         result.Should().BeEmpty();
