@@ -24,7 +24,7 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\..\DivingAplication\Diving.Application\Diving.Application.csproj" />
+      <ProjectReference Include="..\Diving.Application\Diving.Application.csproj" />
       <ProjectReference Include="..\Diving.Domain\Diving.Domain.csproj" />
       <ProjectReference Include="..\Diving.Infrastructure\Diving.Infrastructure.csproj" />
     </ItemGroup>

@@ -13,9 +13,19 @@ public class Subject : Entity
     public long SubjectId { get; }
     public string Name { get; set; }
 
-    public static Subject CreateNewSubjects(string name)
+    public static Subject CreateNewSubject(string name)
     {
         return new(0, name);
+    }
+
+    public static Subject CreateNewSubject(int commandSubjectId, string commandSubjectName)
+    {
+        throw new NotImplementedException();
+    }
+
+    public static Subject CreateNewSubject(Subject commandXxx)
+    {
+        throw new NotImplementedException();
     }
 
     public void ModifySubjectData(string name)

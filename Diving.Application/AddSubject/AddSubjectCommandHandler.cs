@@ -23,7 +23,7 @@ internal class AddSubjectCommandHandler : ICommandHandler<AddSubjectCommand, Sub
             throw new("Course not found");
         }
 
-        var subject = Subject.CreateNewSubject(command.subjectName);
+        var subject = Subject.CreateNewSubject(command.subjectId, command.subjectName);
 
         course.Subjects.Add(Subject.CreateNewSubject(subject));
 
