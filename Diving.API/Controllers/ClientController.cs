@@ -5,8 +5,8 @@ using Diving.Application.UpdateClient;
 using Diving.Domain.Client;
 using Diving.Domain.Models;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ClientDto = Diving.Application.ReadClients.ClientDto;
 
 namespace Diving.API.Controllers;
 public record UpdateClientRequest(long ClientId, string Name, string Surname);
@@ -19,7 +19,7 @@ public class ClientController : ControllerBase
     private readonly ILogger _logger;
     private readonly ISender _sender;
 
-    internal ClientController(
+    public ClientController(
         IClientRepository clientRepository,
         ILogger<ClientController> logger,
         ISender sender)
@@ -30,7 +30,8 @@ public class ClientController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ClientDto>>> ReadClients(CancellationToken cancellationToken)
+    [Authorize]
+    public async Task<ActionResult<IEnumerable<ReadClientsDto>>> ReadClients(CancellationToken cancellationToken)
     {
         _logger.LogInformation("GET: GetAllClients");
         var clients = await _sender.Send(new ReadClientsQuery(), cancellationToken);
@@ -38,14 +39,16 @@ public class ClientController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<Application.ReadClient.ClientDto> ReadClient(long id, CancellationToken cancellationToken)
+    [Authorize]
+    public async Task<Application.ReadClient.ReadClientDto> ReadClient(long id, CancellationToken cancellationToken)
     {
         _logger.LogInformation("GET: GetClientWithId");
         return  await _sender.Send(new Application.ReadClient.ReadClientsQuery(id), cancellationToken);
     }
 
     [HttpPost]
-    public async Task<ActionResult<ClientDto>> CreateClient(NewClientRequest newClientRequest, CancellationToken cancellationToken)
+    [Authorize("admin")]
+    public async Task<ActionResult<ReadClientsDto>> CreateClient(NewClientRequest newClientRequest, CancellationToken cancellationToken)
     {
         _logger.LogInformation("POST: AddClient");
         var client = await _sender.Send(new AddClientCommand(newClientRequest.Name, newClientRequest.Surname, newClientRequest.Email), cancellationToken);

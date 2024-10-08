@@ -3,9 +3,9 @@ using Diving.Application.Abstarction.Messaging;
 
 namespace Diving.Application.ReadClients;
 
-public record ReadClientsQuery() : IQuery<IReadOnlyCollection<ClientDto>>;
+public record ReadClientsQuery() : IQuery<IReadOnlyCollection<ReadClientsDto>>;
 
-internal class ReadClientsQueryHandler : IQueryHandler<ReadClientsQuery , IReadOnlyCollection<ClientDto>>
+internal class ReadClientsQueryHandler : IQueryHandler<ReadClientsQuery , IReadOnlyCollection<ReadClientsDto>>
 {
     private readonly IClientRepository _clientRepository;
 
@@ -14,12 +14,12 @@ internal class ReadClientsQueryHandler : IQueryHandler<ReadClientsQuery , IReadO
         _clientRepository = clientRepository;
     }
 
-    public async Task<IReadOnlyCollection<ClientDto>> Handle(ReadClientsQuery request, CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<ReadClientsDto>> Handle(ReadClientsQuery request, CancellationToken cancellationToken)
     {
         var clients = await _clientRepository.ReadAllClients(cancellationToken);
 
         return clients
-            .Select(x => new ClientDto(x.ClientId, x.Name, x.Surname, x.Email))
+            .Select(x => new ReadClientsDto(x.ClientId, x.Name, x.Surname, x.Email))
             .ToList();
     }
 }

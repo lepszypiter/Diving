@@ -1,5 +1,8 @@
+using Diving.API;
 using Diving.Application;
 using Diving.Infrastructure;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +16,21 @@ builder.Services.AddSwaggerGen();
 builder.Services.RegisterInfrastructureServices();
 builder.Services.RegisterApplicationServices();
 
+var domain = $"https://{builder.Configuration["Auth0:Domain"]}/";
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = domain;
+        options.Audience = builder.Configuration["Auth0:Audience"];
+    });
+
+builder.Services.AddAuthorization(options => options.AddPolicy("admin", policy => policy.Requirements.Add(new HasScopeRequirement("admin", domain))));
+builder.Services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
+
 var app = builder.Build();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -23,8 +40,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-app.UseAuthorization();
+app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
 app.MapControllers();
 

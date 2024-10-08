@@ -3,9 +3,9 @@ using Diving.Domain.Models;
 
 namespace Diving.Application.ReadClient;
 
-public record ReadClientsQuery(long ClientId) : IQuery<ClientDto>;
+public record ReadClientsQuery(long ClientId) : IQuery<ReadClientDto>;
 
-internal class ReadClientQueryHandler : IQueryHandler<ReadClientsQuery, ClientDto>
+internal class ReadClientQueryHandler : IQueryHandler<ReadClientsQuery, ReadClientDto>
 {
     private readonly IClientRepository _clientRepository;
 
@@ -14,7 +14,7 @@ internal class ReadClientQueryHandler : IQueryHandler<ReadClientsQuery, ClientDt
         _clientRepository = clientRepository;
     }
 
-    public async Task<ClientDto> Handle(ReadClientsQuery request, CancellationToken cancellationToken)
+    public async Task<ReadClientDto> Handle(ReadClientsQuery request, CancellationToken cancellationToken)
     {
         var client = await _clientRepository.GetById(request.ClientId, cancellationToken);
         if (client == null)
@@ -22,6 +22,6 @@ internal class ReadClientQueryHandler : IQueryHandler<ReadClientsQuery, ClientDt
             throw new("Client not found");
         }
 
-        return new ClientDto(client.ClientId, client.Name, client.Surname, client.Email);
+        return new ReadClientDto(client.ClientId, client.Name, client.Surname, client.Email);
     }
 }
