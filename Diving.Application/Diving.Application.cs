@@ -6,6 +6,8 @@ using Diving.Application.ModifyCourse;
 using Diving.Application.ModifyInstructor;
 using Diving.Application.ReadClients;
 using Diving.Application.UpdateClient;
+using Diving.Domain.Models;
+using Diving.Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Diving.Application;
@@ -23,6 +25,7 @@ public static class DivingApplication
         services.AddScoped<GetCoursesQueryHandler>();
         services.AddScoped<ModifyCoursesCommandHandler>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<ISubjectRepository, SubjectRepository>();
 
         var tt = typeof(DivingApplication);
 
