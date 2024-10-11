@@ -18,7 +18,7 @@ internal class ClientRepository : IClientRepository
 
     public async Task<IReadOnlyCollection<Client>> ReadAllClients(CancellationToken cancellationToken)
     {
-        var result = await _context.Clients.Take(15).ToListAsync(cancellationToken);
+        var result = await _context.Clients.ToListAsync(cancellationToken);
         _logger.LogTrace("GetAllClients {Count}",  result.Count);
         return result;
     }
@@ -26,7 +26,7 @@ internal class ClientRepository : IClientRepository
     public async Task<Client?> GetById(long id, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Id {}", id);// log id
-        return await _context.Clients.FindAsync(id, cancellationToken);
+        return await _context.Clients.FindAsync([ id ], cancellationToken);
     }
 
     public async Task Add(Client client)
@@ -34,9 +34,10 @@ internal class ClientRepository : IClientRepository
         await _context.Clients.AddAsync(client);
     }
 
-    public Task Delete(long id, CancellationToken cancellationTokent)
+    public Task Delete(long id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        _context.Clients.Remove(_context.Clients.Single(x => x.ClientId == id));
+        return Task.CompletedTask;
     }
 
     public async Task Save()

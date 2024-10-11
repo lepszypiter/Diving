@@ -5,7 +5,6 @@ using Diving.Application.UpdateClient;
 using Diving.Domain.Client;
 using Diving.Domain.Models;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Diving.API.Controllers;
@@ -30,7 +29,7 @@ public class ClientController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize]
+    //[Authorize]
     public async Task<ActionResult<IEnumerable<ReadClientsDto>>> ReadClients(CancellationToken cancellationToken)
     {
         _logger.LogInformation("GET: GetAllClients");
@@ -39,7 +38,7 @@ public class ClientController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    [Authorize]
+    //[Authorize]
     public async Task<Application.ReadClient.ReadClientDto> ReadClient(long id, CancellationToken cancellationToken)
     {
         _logger.LogInformation("GET: GetClientWithId");
@@ -47,7 +46,7 @@ public class ClientController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize("admin")]
+    //[Authorize("admin")]
     public async Task<ActionResult<ReadClientsDto>> CreateClient(NewClientRequest newClientRequest, CancellationToken cancellationToken)
     {
         _logger.LogInformation("POST: AddClient");
