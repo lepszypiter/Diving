@@ -1,6 +1,8 @@
 ﻿using Diving.Application.AddCourse;
-using Diving.Application.GetCourse;
-using Diving.Application.ModifyCourse;
+using Diving.Application.DeleteCourse;
+using Diving.Application.ReadCourse;
+using Diving.Application.ReadCourses;
+using Diving.Application.UpdateCourse;
 using Diving.Domain.Course;
 using Diving.Domain.Models;
 using MediatR;
@@ -15,57 +17,56 @@ public class CourseController : ControllerBase
     private readonly ICourseRepository _courseRepository;
     private readonly ILogger _logger;
     private readonly ISender _sender;
-    private readonly GetCoursesQueryHandler _getCoursesQueryHandler;
-    private readonly ModifyCoursesCommandHandler _modifyCoursesCommandHandler;
 
     public CourseController(
         ICourseRepository courseRepository,
         ILogger<CourseController> logger,
-        GetCoursesQueryHandler getCoursesQueryHandler,
-        ModifyCoursesCommandHandler modifyCoursesCommandHandler,
         ISender sender)
     {
-        _getCoursesQueryHandler = getCoursesQueryHandler;
-        _modifyCoursesCommandHandler = modifyCoursesCommandHandler;
         _sender = sender;
         _courseRepository = courseRepository;
         _logger = logger;
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Course>>> GetCourses()
+    public async Task<ActionResult<IEnumerable<Course>>> ReadCourses(CancellationToken cancellationToken)
     {
         _logger.LogInformation("GET: GetAllCourses");
-        var courses = await _getCoursesQueryHandler.Handle();
+        var courses = await  _sender.Send(new ReadCoursesQuery(), cancellationToken);
         return Ok(courses);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Course>> GetCourse(long id)
+    public async Task<ReadCourseDto> ReadCourse(long id, CancellationToken cancellationToken)
     {
         _logger.LogInformation("GET: GetCourseWithId");
-        var course = await _courseRepository.GetById(id);
-
-        return course ?? (ActionResult<Course>)NotFound();
+        return  await _sender.Send(new ReadCourseQuery(id), cancellationToken);
     }
 
     [HttpPost]
-    public async Task<ActionResult<CourseDto>> PostCourse(NewCourseDto newCourseDto, CancellationToken cancellationToken)
+    public async Task<ActionResult<ReadCoursesDto>> CreateCourse(NewCourseRequest newCourseRequest, CancellationToken cancellationToken)
     {
         _logger.LogInformation("POST: AddCourse");
         var course = await _sender.Send(
-            new AddCourseCommand(newCourseDto.Name, newCourseDto.Instructor, newCourseDto.HoursOnOpenWater, newCourseDto.HoursOnPool, newCourseDto.HoursOfLectures, newCourseDto.Price),
+            new AddCourseCommand(
+                newCourseRequest.Name,
+                newCourseRequest.Instructor,
+                newCourseRequest.HoursOnOpenWater,
+                newCourseRequest.HoursOnPool,
+                newCourseRequest.HoursOfLectures,
+                newCourseRequest.Price),
             cancellationToken);
-        return CreatedAtAction("GetCourse", new { id = course.CourseId }, course);
+        return CreatedAtAction("ReadCourse", new { id = course.CourseId }, course);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutCourse(ModifyCourseDto dto)
+    public async Task<ActionResult<Course>> UpdateCourse(UpdateCourseCommand request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("PUT: ModifyCourse");
         try
         {
-            var result = await _modifyCoursesCommandHandler.Handle(dto);
+            var result =  await _sender.Send(
+                new UpdateCourseCommand(request.CourseId, request.Name), cancellationToken);
             return Ok(result);
         }
         catch (ArgumentException)
@@ -75,17 +76,10 @@ public class CourseController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteCourse(long id)
+    public async Task<IActionResult> DeleteCourse(long id, CancellationToken cancellationToken)
     {
         _logger.LogInformation("DELETE: DeleteCourseWithID");
-        var course = await _courseRepository.GetById(id);
-        if (course == null)
-        {
-            return NotFound();
-        }
-
-        _courseRepository.Remove(course);
-        await _courseRepository.Save();
+        await _sender.Send(new DeleteCourseCommand(id), cancellationToken);
 
         return NoContent();
     }

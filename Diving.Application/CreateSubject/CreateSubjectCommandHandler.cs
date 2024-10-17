@@ -17,7 +17,7 @@ internal class CreateSubjectCommandHandler : ICommandHandler<CreateSubjectComman
 
     public async Task<Subject> Handle(CreateSubjectCommand command, CancellationToken cancellationToken)
     {
-        var course = await _repository.GetById(command.CourseId);
+        var course = await _repository.GetById(command.CourseId, cancellationToken);
         if (course == null)
         {
             throw new("Course not found");

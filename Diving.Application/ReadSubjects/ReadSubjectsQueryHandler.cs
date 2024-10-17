@@ -16,7 +16,7 @@ internal class ReadSubjectsQueryHandler : IQueryHandler<ReadSubjectsQuery, IRead
 
     public async Task<IReadOnlyCollection<SubjectDto>> Handle(ReadSubjectsQuery query, CancellationToken cancellationToken)
     {
-        var subjects = await _repository.GetById(query.CourseId);
+        var subjects = await _repository.GetById(query.CourseId, cancellationToken);
         if (subjects == null)
         {
             throw new("Course not found");

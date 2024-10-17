@@ -1,8 +1,8 @@
 ﻿using Diving.Domain.Course;
 
-namespace Diving.Application.GetCourse;
+namespace Diving.Application.ReadCourse;
 
-public record CourseDto(
+public record ReadCourseDto(
     long CourseId,
     string? Name,
     string? Instructor,

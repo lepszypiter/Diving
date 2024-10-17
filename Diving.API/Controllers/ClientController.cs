@@ -43,7 +43,7 @@ public class ClientController : ControllerBase
     public async Task<Application.ReadClient.ReadClientDto> ReadClient(long id, CancellationToken cancellationToken)
     {
         _logger.LogInformation("GET: GetClientWithId");
-        return  await _sender.Send(new Application.ReadClient.ReadClientsQuery(id), cancellationToken);
+        return  await _sender.Send(new Application.ReadClient.ReadClientQuery(id), cancellationToken);
     }
 
     [HttpPost]

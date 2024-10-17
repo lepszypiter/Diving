@@ -16,7 +16,7 @@ public class CourseRepository : ICourseRepository
         _logger = logger;
     }
 
-    public async Task<IReadOnlyCollection<Course>> GetAllCourses()
+    public async Task<IReadOnlyCollection<Course>> ReadAllCourses(CancellationToken cancellationToken)
     {
         var result = await _context.Courses
             .Include(x => x.Subjects)
@@ -26,7 +26,7 @@ public class CourseRepository : ICourseRepository
         return result;
     }
 
-    public async Task<Course?> GetById(long id)
+    public async Task<Course?> GetById(long id, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Id {}", id);// log id
         return await _context
@@ -44,6 +44,12 @@ public class CourseRepository : ICourseRepository
     {
         var ret = await _context.SaveChangesAsync();
         _logger.LogInformation("Record changed {Count}", ret);// log changed record
+    }
+
+    public Task Delete(long id, CancellationToken cancellationToken)
+    {
+        _context.Courses.Remove(_context.Courses.Single(x => x.CourseId == id));
+        return Task.CompletedTask;
     }
 
     public void Remove(Course course)

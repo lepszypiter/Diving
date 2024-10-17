@@ -1,10 +1,9 @@
 ﻿using Diving.Application.AddClient;
 using Diving.Application.AddInstructor;
-using Diving.Application.GetCourse;
 using Diving.Application.GetInstructor;
-using Diving.Application.ModifyCourse;
 using Diving.Application.ModifyInstructor;
 using Diving.Application.ReadClients;
+using Diving.Application.ReadCourses;
 using Diving.Application.UpdateClient;
 using Diving.Domain.Models;
 using Diving.Infrastructure.Repositories;
@@ -22,8 +21,7 @@ public static class DivingApplication
         services.AddScoped<GetInstructorsQueryHandler>();
         services.AddScoped<AddInstructorCommandHandler>();
         services.AddScoped<ModifyInstructorsCommandHandler>();
-        services.AddScoped<GetCoursesQueryHandler>();
-        services.AddScoped<ModifyCoursesCommandHandler>();
+        services.AddScoped<ReadCoursesQueryHandler>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<ISubjectRepository, SubjectRepository>();
 

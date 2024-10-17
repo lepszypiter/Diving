@@ -1,5 +1,4 @@
 ﻿using AutoFixture;
-using Diving.Application.ModifyCourse;
 using Diving.Domain.Course;
 using Diving.Domain.Models;
 using FluentAssertions;
@@ -62,7 +61,7 @@ public class ModifyCoursesCommandHandlerTests
         await act.Should().ThrowAsync<ArgumentException>();
     }
 
-    private static ModifyCourseDto CreateFakeNewCourseDto()
+    private static UpdateCourseRequest CreateFakeNewCourseDto()
     {
         return new(
             Fixture.Create<long>(),

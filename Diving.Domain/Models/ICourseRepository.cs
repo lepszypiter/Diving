@@ -2,9 +2,9 @@
 
 public interface ICourseRepository
 {
-    Task<IReadOnlyCollection<Course.Course>> GetAllCourses();
-    Task<Course.Course?> GetById(long id);
+    Task<IReadOnlyCollection<Course.Course>> ReadAllCourses(CancellationToken cancellationToken);
+    Task<Course.Course?> GetById(long id, CancellationToken cancellationToken);
     Task Add(Course.Course course);
     Task Save();
-    void Remove(Course.Course course);
+    Task Delete(long id, CancellationToken cancellationToken);
 }

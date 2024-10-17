@@ -1,5 +1,5 @@
 ﻿using AutoFixture;
-using Diving.Application.GetCourse;
+using Diving.Application.ReadCourses;
 using Diving.Domain.Course;
 using Diving.Domain.Models;
 using FluentAssertions;
@@ -7,7 +7,7 @@ using Moq;
 
 namespace Diving.Application.Tests.GetCourse;
 
-public class GetCoursesQueryHandlerTests
+public class ReadCoursesQueryHandlerTests
 {
     private static readonly Fixture Fixture = new();
 
@@ -22,9 +22,9 @@ public class GetCoursesQueryHandlerTests
         };
 
         var courseRepositoryMock = new Mock<ICourseRepository>();
-        courseRepositoryMock.Setup(x => x.GetAllCourses()).ReturnsAsync(courses);
+        courseRepositoryMock.Setup(x => x.ReadAllCourses()).ReturnsAsync(courses);
 
-        var handler = new GetCoursesQueryHandler(courseRepositoryMock.Object);
+        var handler = new ReadCoursesQueryHandler(courseRepositoryMock.Object);
 
         // Act
         var result = await handler.Handle();
@@ -41,9 +41,9 @@ public class GetCoursesQueryHandlerTests
         var courses = new List<Course>();
 
         var courseRepositoryMock = new Mock<ICourseRepository>();
-        courseRepositoryMock.Setup(x => x.GetAllCourses()).ReturnsAsync(courses);
+        courseRepositoryMock.Setup(x => x.ReadAllCourses()).ReturnsAsync(courses);
 
-        var handler = new GetCoursesQueryHandler(courseRepositoryMock.Object);
+        var handler = new ReadCoursesQueryHandler(courseRepositoryMock.Object);
 
         // Act
         var result = await handler.Handle();
