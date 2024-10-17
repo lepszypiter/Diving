@@ -3,7 +3,6 @@ using Diving.Application.DeleteClient;
 using Diving.Application.ReadClients;
 using Diving.Application.UpdateClient;
 using Diving.Domain.Client;
-using Diving.Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,17 +14,14 @@ public record UpdateClientRequest(long ClientId, string Name, string Surname);
 [ApiController]
 public class ClientController : ControllerBase
 {
-    private readonly IClientRepository _clientRepository;
     private readonly ILogger _logger;
     private readonly ISender _sender;
 
     public ClientController(
-        IClientRepository clientRepository,
         ILogger<ClientController> logger,
         ISender sender)
     {
         _sender = sender;
-        _clientRepository = clientRepository;
         _logger = logger;
     }
 

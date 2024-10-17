@@ -4,7 +4,6 @@ using Diving.Application.ReadCourse;
 using Diving.Application.ReadCourses;
 using Diving.Application.UpdateCourse;
 using Diving.Domain.Course;
-using Diving.Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,17 +13,14 @@ namespace Diving.API.Controllers;
 [ApiController]
 public class CourseController : ControllerBase
 {
-    private readonly ICourseRepository _courseRepository;
     private readonly ILogger _logger;
     private readonly ISender _sender;
 
     public CourseController(
-        ICourseRepository courseRepository,
         ILogger<CourseController> logger,
         ISender sender)
     {
         _sender = sender;
-        _courseRepository = courseRepository;
         _logger = logger;
     }
 
