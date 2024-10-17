@@ -4,7 +4,7 @@ public class AuthenticationClient
 {
     private static string? _tokenCache;
 
-    private record Token(string access_token, string TokenType, int expires_in);
+    private record Token(string AccessToken);
 
     public async Task<string> GetToken()
     {
@@ -30,7 +30,7 @@ public class AuthenticationClient
         Console.WriteLine(await response.Content.ReadAsStringAsync());
         var readAsAsync = await response.Content.ReadAsAsync<Token>();
         Console.WriteLine(readAsAsync);
-        _tokenCache = "Bearer " + readAsAsync.access_token;
+        _tokenCache = "Bearer " + readAsAsync.AccessToken;
         return _tokenCache;
     }
 }

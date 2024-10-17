@@ -12,14 +12,14 @@ namespace Diving.API.Controllers;
 [ApiController]
 public class InstructorController : ControllerBase
 {
-    private readonly IInstructorRepository _InstructorRepository;
+    private readonly IInstructorRepository _instructorRepository;
     private readonly ILogger _logger;
     private readonly ISender _sender;
     private readonly GetInstructorsQueryHandler _getInstructorsQueryHandler;
     private readonly ModifyInstructorsCommandHandler _modifyInstructorsCommandHandler;
 
     public InstructorController(
-        IInstructorRepository InstructorRepository,
+        IInstructorRepository instructorRepository,
         ILogger<InstructorController> logger,
         GetInstructorsQueryHandler getClientsQueryHandler,
         ModifyInstructorsCommandHandler modifyClientsCommandHandler,
@@ -28,7 +28,7 @@ public class InstructorController : ControllerBase
         _getInstructorsQueryHandler = getClientsQueryHandler;
         _modifyInstructorsCommandHandler = modifyClientsCommandHandler;
         _sender = sender;
-        _InstructorRepository = InstructorRepository;
+        _instructorRepository = instructorRepository;
         _logger = logger;
     }
 
@@ -44,7 +44,7 @@ public class InstructorController : ControllerBase
     public async Task<ActionResult<Instructor>> GetInstructor(long id)
     {
         _logger.LogInformation("GET: GetInstructorWithId");
-        var instructor = await _InstructorRepository.GetById(id);
+        var instructor = await _instructorRepository.GetById(id);
 
         return instructor ?? (ActionResult<Instructor>)NotFound();
     }
@@ -77,14 +77,14 @@ public class InstructorController : ControllerBase
     public async Task<IActionResult> DeleteInstructor(long id)
     {
         _logger.LogInformation("DELETE: DeleteInstructorWithID");
-        var instructor = await _InstructorRepository.GetById(id);
+        var instructor = await _instructorRepository.GetById(id);
         if (instructor == null)
         {
             return NotFound();
         }
 
-        _InstructorRepository.Remove(instructor);
-        await _InstructorRepository.Save();
+        _instructorRepository.Remove(instructor);
+        await _instructorRepository.Save();
 
         return NoContent();
     }

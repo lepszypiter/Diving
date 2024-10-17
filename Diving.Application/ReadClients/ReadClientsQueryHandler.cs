@@ -3,7 +3,7 @@ using Diving.Application.Abstarction.Messaging;
 
 namespace Diving.Application.ReadClients;
 
-public record ReadClientsQuery() : IQuery<IReadOnlyCollection<ReadClientsDto>>;
+public record ReadClientsQuery : IQuery<IReadOnlyCollection<ReadClientsDto>>;
 
 internal class ReadClientsQueryHandler : IQueryHandler<ReadClientsQuery , IReadOnlyCollection<ReadClientsDto>>
 {
