@@ -31,7 +31,8 @@ public class Course : Entity
 
     public static Course CreateNewCourse(string name, string instructor, int hoursOnOpenWater, int hoursOnPool, int hoursOfLectures, decimal price)
     {
-        return new(0, name, instructor, hoursOnOpenWater, hoursOnPool, hoursOfLectures, price, null);
+        CheckRule(new CourseNameShouldNotBeNullRule(name));
+        return new Course(0, name, instructor, hoursOnOpenWater, hoursOnPool, hoursOfLectures, price, null);
     }
 
     public long CourseId { get;}
