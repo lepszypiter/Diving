@@ -3,9 +3,6 @@ using Diving.Application.DeleteClient;
 using Diving.Application.ReadClients;
 using Diving.Application.UpdateClient;
 using Diving.Domain.Client;
-using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Diving.API.Controllers;
 public record UpdateClientRequest(long ClientId, string Name, string Surname);

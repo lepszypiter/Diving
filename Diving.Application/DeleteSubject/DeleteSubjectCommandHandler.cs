@@ -1,7 +1,4 @@
-﻿using Diving.Application.Abstarction.Messaging;
-using Diving.Domain.Models;
-
-namespace Diving.Application.DeleteSubject;
+﻿namespace Diving.Application.DeleteSubject;
 
 public record DeleteSubjectCommand(long SubjectId) : ICommand;
 

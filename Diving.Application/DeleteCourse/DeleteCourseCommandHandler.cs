@@ -1,7 +1,4 @@
-﻿using Diving.Application.Abstarction.Messaging;
-using Diving.Domain.Models;
-
-namespace Diving.Application.DeleteCourse;
+﻿namespace Diving.Application.DeleteCourse;
 
 public record DeleteCourseCommand(long CourseId) : ICommand;
 

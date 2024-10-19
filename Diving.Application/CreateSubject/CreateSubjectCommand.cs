@@ -1,5 +1,4 @@
-﻿using Diving.Application.Abstarction.Messaging;
-using Diving.Domain.Course;
+﻿using Diving.Domain.Course;
 
 namespace Diving.Application.CreateSubject;
 

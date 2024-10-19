@@ -1,8 +1,6 @@
 ﻿using Diving.Application.CreateSubject;
 using Diving.Application.DeleteSubject;
 using Diving.Application.ReadSubjects;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Diving.API.Controllers;
 

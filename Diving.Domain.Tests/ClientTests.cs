@@ -1,5 +1,4 @@
 using Diving.Domain.BuildingBlocks;
-using FluentAssertions;
 
 namespace Diving.Domain.Tests;
 

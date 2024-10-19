@@ -1,7 +1,4 @@
-﻿using Diving.Application.Abstarction.Messaging;
-using Diving.Domain.Models;
-
-namespace Diving.Application.UpdateClient;
+﻿namespace Diving.Application.UpdateClient;
 
 public record UpdateClientCommand(long ClientId, string Name, string Surname) : ICommand<ClientDto>;
 

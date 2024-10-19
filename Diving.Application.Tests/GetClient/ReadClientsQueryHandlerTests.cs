@@ -1,9 +1,6 @@
-using AutoFixture;
 using Diving.Application.ReadClients;
 using Diving.Domain.Client;
 using Diving.Domain.Models;
-using FluentAssertions;
-using Moq;
 
 namespace Diving.Application.Tests.GetClient;
 

@@ -4,8 +4,6 @@ using Diving.Application.ReadCourse;
 using Diving.Application.ReadCourses;
 using Diving.Application.UpdateCourse;
 using Diving.Domain.Course;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Diving.API.Controllers;
 

@@ -1,10 +1,8 @@
 ﻿using Diving.Domain.Course;
-using Diving.Domain.Models;
-using MediatR;
 
 namespace Diving.Application.AddCourse;
 
-internal class AddCourseCommandHandler : IRequestHandler<AddCourseCommand, Course>
+internal class AddCourseCommandHandler : ICommandHandler<AddCourseCommand, Course>
 {
     private readonly ICourseRepository _courseRepository;
     private readonly IUnitOfWork _unitOfWork;

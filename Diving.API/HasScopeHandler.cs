@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
-
 namespace Diving.API;
 
 public class HasScopeHandler : AuthorizationHandler<HasScopeRequirement>

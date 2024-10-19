@@ -1,5 +1,3 @@
-using AutoFixture;
-
 namespace Diving.APi.IntegrationTest;
 
 [TestCaseOrderer(

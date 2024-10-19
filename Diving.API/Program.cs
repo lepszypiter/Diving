@@ -2,7 +2,6 @@ using Diving.API;
 using Diving.Application;
 using Diving.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 

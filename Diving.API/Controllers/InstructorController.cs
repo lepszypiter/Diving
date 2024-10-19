@@ -3,8 +3,6 @@ using Diving.Application.GetInstructor;
 using Diving.Application.ModifyInstructor;
 using Diving.Domain.Instructor;
 using Diving.Domain.Models;
-using Microsoft.AspNetCore.Mvc;
-using MediatR;
 
 namespace Diving.API.Controllers;
 

@@ -1,9 +1,6 @@
-﻿using AutoFixture;
-using Diving.Application.GetInstructor;
+﻿using Diving.Application.GetInstructor;
 using Diving.Domain.Instructor;
 using Diving.Domain.Models;
-using FluentAssertions;
-using Moq;
 
 namespace Diving.Application.Tests.GetInstructor;
 

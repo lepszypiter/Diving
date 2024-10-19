@@ -1,7 +1,4 @@
-﻿using Diving.Domain.Models;
-using Diving.Application.Abstarction.Messaging;
-
-namespace Diving.Application.ReadClients;
+﻿namespace Diving.Application.ReadClients;
 
 public record ReadClientsQuery : IQuery<IReadOnlyCollection<ReadClientsDto>>;
 

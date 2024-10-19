@@ -1,5 +1,4 @@
 ﻿using Diving.Domain.Instructor;
-using Diving.Domain.Models;
 
 namespace Diving.Application.ModifyInstructor;
 

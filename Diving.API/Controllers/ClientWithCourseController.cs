@@ -1,6 +1,5 @@
 using Diving.Domain.Models;
 using Diving.Infrastructure;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Diving.API.Controllers;

@@ -1,6 +1,4 @@
-﻿using Diving.Application.Abstarction.Messaging;
-using Diving.Domain.Instructor;
-using Diving.Domain.Models;
+﻿using Diving.Domain.Instructor;
 
 namespace Diving.Application.AddInstructor;
 

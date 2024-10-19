@@ -1,6 +1,4 @@
-﻿using AutoFixture;
-
-namespace Diving.APi.IntegrationTest;
+﻿namespace Diving.APi.IntegrationTest;
 
 public class SubjectApiTest
 {

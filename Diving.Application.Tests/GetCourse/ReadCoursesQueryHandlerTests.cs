@@ -1,9 +1,6 @@
-﻿using AutoFixture;
-using Diving.Application.ReadCourses;
+﻿using Diving.Application.ReadCourses;
 using Diving.Domain.Course;
 using Diving.Domain.Models;
-using FluentAssertions;
-using Moq;
 
 namespace Diving.Application.Tests.GetCourse;
 

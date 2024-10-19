@@ -1,5 +1,4 @@
 ﻿using Diving.Domain.Course;
-using FluentAssertions;
 
 namespace Diving.Domain.Tests;
 

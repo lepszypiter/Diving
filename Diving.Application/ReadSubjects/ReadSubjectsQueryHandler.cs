@@ -1,7 +1,4 @@
-﻿using Diving.Application.Abstarction.Messaging;
-using Diving.Domain.Models;
-
-namespace Diving.Application.ReadSubjects;
+﻿namespace Diving.Application.ReadSubjects;
 
 public record ReadSubjectsQuery(int CourseId) : IQuery<IReadOnlyCollection<SubjectDto>>;
 

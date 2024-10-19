@@ -5,7 +5,6 @@ using Diving.Application.ModifyInstructor;
 using Diving.Application.ReadClients;
 using Diving.Application.ReadCourses;
 using Diving.Application.UpdateClient;
-using Diving.Domain.Models;
 using Diving.Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 

@@ -1,7 +1,4 @@
-﻿using Diving.Application.Abstarction.Messaging;
-using Diving.Domain.Models;
-
-namespace Diving.Application.DeleteClient;
+﻿namespace Diving.Application.DeleteClient;
 
 public record DeleteClientCommand(long ClientId) : ICommand;
 

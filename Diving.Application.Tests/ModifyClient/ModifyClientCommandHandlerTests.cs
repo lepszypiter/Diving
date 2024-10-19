@@ -1,9 +1,6 @@
-﻿using AutoFixture;
-using Diving.Application.UpdateClient;
+﻿using Diving.Application.UpdateClient;
 using Diving.Domain.Client;
 using Diving.Domain.Models;
-using FluentAssertions;
-using Moq;
 
 namespace Diving.Application.Tests.ModifyClient;
 

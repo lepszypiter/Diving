@@ -1,6 +1,4 @@
-﻿using Diving.Domain.Models;
-
-namespace Diving.Application.GetInstructor;
+﻿namespace Diving.Application.GetInstructor;
 
 public class GetInstructorsQueryHandler
 {
