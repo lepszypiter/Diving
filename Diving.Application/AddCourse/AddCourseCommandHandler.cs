@@ -7,10 +7,12 @@ namespace Diving.Application.AddCourse;
 internal class AddCourseCommandHandler : IRequestHandler<AddCourseCommand, Course>
 {
     private readonly ICourseRepository _courseRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public AddCourseCommandHandler(ICourseRepository courseRepository)
+    public AddCourseCommandHandler(ICourseRepository courseRepository, IUnitOfWork unitOfWork)
     {
         _courseRepository = courseRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Course> Handle(AddCourseCommand request, CancellationToken cancellationToken)
@@ -23,7 +25,7 @@ internal class AddCourseCommandHandler : IRequestHandler<AddCourseCommand, Cours
             request.HoursOfLectures,
             request.Price);
         await _courseRepository.Add(course);
-        await _courseRepository.Save();
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
         return course;
     }
 }

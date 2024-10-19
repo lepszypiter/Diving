@@ -22,12 +22,12 @@ public class ReadCoursesQueryHandlerTests
         };
 
         var courseRepositoryMock = new Mock<ICourseRepository>();
-        courseRepositoryMock.Setup(x => x.ReadAllCourses()).ReturnsAsync(courses);
+        courseRepositoryMock.Setup(x => x.ReadAllCourses(It.IsAny<CancellationToken>())).ReturnsAsync(courses);
 
         var handler = new ReadCoursesQueryHandler(courseRepositoryMock.Object);
 
         // Act
-        var result = await handler.Handle();
+        var result = await handler.Handle(new ReadCoursesQuery(), CancellationToken.None);
 
         // Assert
         result.Should().HaveCount(2);
@@ -41,12 +41,12 @@ public class ReadCoursesQueryHandlerTests
         var courses = new List<Course>();
 
         var courseRepositoryMock = new Mock<ICourseRepository>();
-        courseRepositoryMock.Setup(x => x.ReadAllCourses()).ReturnsAsync(courses);
+        courseRepositoryMock.Setup(x => x.ReadAllCourses(It.IsAny<CancellationToken>())).ReturnsAsync(courses);
 
         var handler = new ReadCoursesQueryHandler(courseRepositoryMock.Object);
 
         // Act
-        var result = await handler.Handle();
+        var result = await handler.Handle(new ReadCoursesQuery(), CancellationToken.None);
 
         // Assert
         result.Should().BeEmpty();
@@ -62,6 +62,6 @@ public class ReadCoursesQueryHandlerTests
             Fixture.Create<int>(),
             Fixture.Create<int>(),
             Fixture.Create<decimal>(),
-            null);
+            new List<Subject>());
     }
 }

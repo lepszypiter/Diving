@@ -1,4 +1,5 @@
 ﻿using AutoFixture;
+using Diving.Application.UpdateCourse;
 using Diving.Domain.Course;
 using Diving.Domain.Models;
 using FluentAssertions;
@@ -9,68 +10,72 @@ namespace Diving.Application.Tests.ModifyCourse;
 public class ModifyCoursesCommandHandlerTests
 {
     private static readonly Fixture Fixture = new();
+    private readonly Mock<ICourseRepository> _courseRepositoryMock;
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+    private readonly UpdateCourseCommandHandler _handler;
+
+    public ModifyCoursesCommandHandlerTests()
+    {
+        _courseRepositoryMock = new Mock<ICourseRepository>();
+        _unitOfWorkMock = new Mock<IUnitOfWork>();
+        _handler = new UpdateCourseCommandHandler(_courseRepositoryMock.Object, _unitOfWorkMock.Object);
+    }
 
     [Fact]
-    public async Task ShouldModifyCourse_WhenCourseChanged()
+    public async Task ShouldReturnModifiedCourse_WhenCourseChanged()
     {
         // Arrange
-        var modifyCourseDto = CreateFakeNewCourseDto();
+        var modifyCourseDto = CreateUpdateCourseCommand();
 
-        var courseRepositoryMock = new Mock<ICourseRepository>();
-        courseRepositoryMock.Setup(x => x.GetById(modifyCourseDto.CourseId)).ReturnsAsync(CreateFakeCourse(modifyCourseDto.CourseId));
-        var handler = new ModifyCoursesCommandHandler(courseRepositoryMock.Object);
+        _courseRepositoryMock.Setup(x => x.GetById(
+            modifyCourseDto.CourseId,
+            It.IsAny<CancellationToken>()))
+            .ReturnsAsync(CreateFakeCourse(modifyCourseDto.CourseId));
 
         // Act
-        var result = await handler.Handle(modifyCourseDto);
+        var result = await _handler.Handle(modifyCourseDto, CancellationToken.None);
 
         // Assert
         result.Should().BeEquivalentTo(modifyCourseDto, x => x.ExcludingMissingMembers());
     }
 
     [Fact]
-    public async Task ShouldSaveModifiedCourse_WhenCourseExists()
+    public async Task ShouldSaveModifiedCourse_WhenCourseChanged()
     {
         // Arrange
-        var modifyCourseDto = CreateFakeNewCourseDto();
+        var modifyCourseDto = CreateUpdateCourseCommand();
 
-        var courseRepositoryMock = new Mock<ICourseRepository>();
-        courseRepositoryMock.Setup(x => x.GetById(modifyCourseDto.CourseId)).ReturnsAsync(CreateFakeCourse(modifyCourseDto.CourseId));
-        var handler = new ModifyCoursesCommandHandler(courseRepositoryMock.Object);
+        _courseRepositoryMock.Setup(x => x.GetById(
+            modifyCourseDto.CourseId,
+            It.IsAny<CancellationToken>()))
+            .ReturnsAsync(CreateFakeCourse(modifyCourseDto.CourseId));
 
         // Act
-        await handler.Handle(modifyCourseDto);
+        await _handler.Handle(modifyCourseDto, CancellationToken.None);
 
         // Assert
-        courseRepositoryMock.Verify(x => x.Save(), Times.Once);
+        _unitOfWorkMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
     }
 
     [Fact]
     public async Task ShouldThrowArgumentException_WhenCourseDoesNotExist()
     {
         // Arrange
-        var modifyCourseDto = CreateFakeNewCourseDto();
-
-        var courseRepositoryMock = new Mock<ICourseRepository>();
-
-        var handler = new ModifyCoursesCommandHandler(courseRepositoryMock.Object);
+        var modifyCourseDto = CreateUpdateCourseCommand();
 
         // Act
-        Func<Task> act = async () => await handler.Handle(modifyCourseDto);
+        var act = async () => await _handler.Handle(modifyCourseDto, CancellationToken.None);
 
         // Assert
         await act.Should().ThrowAsync<ArgumentException>();
     }
 
-    private static UpdateCourseRequest CreateFakeNewCourseDto()
+    private static UpdateCourseCommand CreateUpdateCourseCommand()
     {
         return new(
             Fixture.Create<long>(),
-            Fixture.Create<string>(),
-            Fixture.Create<string>(),
-            Fixture.Create<int>(),
-            Fixture.Create<int>(),
-            Fixture.Create<int>(),
-            Fixture.Create<decimal>());
+            Fixture.Create<string>()
+        );
     }
 
     private static Course CreateFakeCourse(long courseId)
@@ -83,6 +88,7 @@ public class ModifyCoursesCommandHandlerTests
             Fixture.Create<int>(),
             Fixture.Create<int>(),
             Fixture.Create<decimal>(),
-            null);
+            new List<Subject>()
+        );
     }
 }

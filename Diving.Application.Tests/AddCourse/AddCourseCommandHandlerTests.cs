@@ -18,8 +18,9 @@ public class AddCourseCommandHandlerTests
         var newCourseDto = CreateFakeAddCourseCommand();
 
         var courseRepositoryMock = new Mock<ICourseRepository>();
+        var unitOfWorkMock = new Mock<IUnitOfWork>();
 
-        var handler = new AddCourseCommandHandler(courseRepositoryMock.Object);
+        var handler = new AddCourseCommandHandler(courseRepositoryMock.Object, unitOfWorkMock.Object);
 
         // Act
         var result = await handler.Handle(newCourseDto, CancellationToken.None);
@@ -35,15 +36,16 @@ public class AddCourseCommandHandlerTests
         var newCourseDto = CreateFakeAddCourseCommand();
 
         var courseRepositoryMock = new Mock<ICourseRepository>();
+        var unitOfWorkMock = new Mock<IUnitOfWork>();
 
-        var handler = new AddCourseCommandHandler(courseRepositoryMock.Object);
+        var handler = new AddCourseCommandHandler(courseRepositoryMock.Object, unitOfWorkMock.Object);
 
         // Act
         await handler.Handle(newCourseDto, CancellationToken.None);
 
         // Assert
         courseRepositoryMock.Verify(x => x.Add(It.IsAny<Course>()), Times.Once);
-        courseRepositoryMock.Verify(x => x.Save(), Times.Once);
+        unitOfWorkMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
     }
 
     private static AddCourseCommand CreateFakeAddCourseCommand()
