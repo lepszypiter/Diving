@@ -3,7 +3,7 @@
 namespace Diving.Application.ReadCourse;
 
 public record ReadCourseQuery(long CourseId) : IQuery<ReadCourseDto>;
-public class ReadCourseQueryHandler : IQueryHandler<ReadCourseQuery, ReadCourseDto>
+internal class ReadCourseQueryHandler : IQueryHandler<ReadCourseQuery, ReadCourseDto>
 {
     private readonly ICourseRepository _repository;
 
