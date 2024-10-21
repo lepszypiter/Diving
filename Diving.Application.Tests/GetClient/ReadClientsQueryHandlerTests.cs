@@ -35,7 +35,7 @@ public class ReadClientsQueryHandlerTests
     public async Task ShouldReturnEmptyList_WhenNoClientsInRepository()
     {
         // Arrange
-        var clients = new List<Client>();
+        var clients = ArraySegment<Client>.Empty;
 
         var clientRepositoryMock = new Mock<IClientRepository>();
         clientRepositoryMock.Setup(x => x.ReadAllClients(It.IsAny<CancellationToken>())).ReturnsAsync(clients);

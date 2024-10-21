@@ -35,7 +35,7 @@ public class ReadCoursesQueryHandlerTests
     public async Task ShouldReturnEmptyList_WhenNoCoursesInRepository()
     {
         // Arrange
-        var courses = new List<Course>();
+        var courses = ArraySegment<Course>.Empty;
 
         var courseRepositoryMock = new Mock<ICourseRepository>();
         courseRepositoryMock.Setup(x => x.ReadAllCourses(It.IsAny<CancellationToken>())).ReturnsAsync(courses);

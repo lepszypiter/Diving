@@ -28,6 +28,7 @@ public class ClientController : ControllerBase
     {
         _logger.LogInformation("GET: GetAllClients");
         var clients = await _sender.Send(new ReadClientsQuery(), cancellationToken);
+
         return Ok(clients);
     }
 
@@ -50,6 +51,7 @@ public class ClientController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize("admin")]
     public async Task<ActionResult<Client>> UpdateClient(UpdateClientRequest request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("PUT: ChangeClient");
@@ -66,6 +68,7 @@ public class ClientController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize("admin")]
     public async Task<IActionResult> DeleteClient(long id, CancellationToken cancellationToken)
     {
         _logger.LogInformation("DELETE: DeleteClientWithID");

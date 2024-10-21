@@ -23,6 +23,7 @@ public class CourseController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<ActionResult<IEnumerable<Course>>> ReadCourses(CancellationToken cancellationToken)
     {
         _logger.LogInformation("GET: GetAllCourses");
@@ -31,6 +32,7 @@ public class CourseController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<ReadCourseDto> ReadCourse(long id, CancellationToken cancellationToken)
     {
         _logger.LogInformation("GET: GetCourseWithId");
@@ -38,6 +40,7 @@ public class CourseController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize("admin")]
     public async Task<ActionResult<ReadCoursesDto>> CreateCourse(NewCourseRequest newCourseRequest, CancellationToken cancellationToken)
     {
         _logger.LogInformation("POST: AddCourse");
@@ -54,6 +57,7 @@ public class CourseController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize("admin")]
     public async Task<ActionResult<Course>> UpdateCourse(UpdateCourseCommand request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("PUT: ModifyCourse");
@@ -70,6 +74,7 @@ public class CourseController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize("admin")]
     public async Task<IActionResult> DeleteCourse(long id, CancellationToken cancellationToken)
     {
         _logger.LogInformation("DELETE: DeleteCourseWithID");

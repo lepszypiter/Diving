@@ -35,7 +35,7 @@ public class GetInstructorsQueryHandlerTests
     public async Task ShouldReturnEmptyList_WhenNoInstructorsInRepository()
     {
         // Arrange
-        var instructors = new List<Instructor>();
+        var instructors = ArraySegment<Instructor>.Empty;
 
         var instructorRepositoryMock = new Mock<IInstructorRepository>();
         instructorRepositoryMock.Setup(x => x.GetAllInstructors()).ReturnsAsync(instructors);
