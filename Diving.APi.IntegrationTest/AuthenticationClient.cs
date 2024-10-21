@@ -4,7 +4,8 @@ public class AuthenticationClient
 {
     private static string? _tokenCache;
 
-    private record Token(string AccessToken);
+    private record Token([property: JsonProperty("access_token")] string AccessToken);
+    //private record Token(string AccessToken);
 
     public async Task<string> GetToken()
     {
