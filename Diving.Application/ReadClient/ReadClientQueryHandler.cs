@@ -1,19 +1,19 @@
 ﻿namespace Diving.Application.ReadClient;
 
-public record ReadClientQuery(long ClientId) : IQuery<ReadClientDto>;
-
-internal class ReadClientQueryHandler : IQueryHandler<ReadClientQuery, ReadClientDto>
+public record ReadClientQuery(long ClientId) : ICommand<ReadClientDto>;
+internal class ReadClientQueryHandler : UnitOfWorkCommandHandler<ReadClientQuery, ReadClientDto>
 {
     private readonly IClientRepository _clientRepository;
 
-    public ReadClientQueryHandler(IClientRepository clientRepository)
+    public ReadClientQueryHandler(IClientRepository clientRepository, IUnitOfWork unitOfWork)
+        : base(unitOfWork)
     {
         _clientRepository = clientRepository;
     }
 
-    public async Task<ReadClientDto> Handle(ReadClientQuery request, CancellationToken cancellationToken)
+    protected override async Task<ReadClientDto> HandleCommand(ReadClientQuery command, CancellationToken cancellationToken)
     {
-        var client = await _clientRepository.GetById(request.ClientId, cancellationToken);
+        var client = await _clientRepository.GetById(command.ClientId, cancellationToken);
         if (client == null)
         {
             throw new("Client not found");

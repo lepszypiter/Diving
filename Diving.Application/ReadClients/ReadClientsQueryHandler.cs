@@ -1,17 +1,17 @@
 ﻿namespace Diving.Application.ReadClients;
 
-public record ReadClientsQuery : IQuery<IReadOnlyCollection<ReadClientsDto>>;
-
-internal class ReadClientsQueryHandler : IQueryHandler<ReadClientsQuery , IReadOnlyCollection<ReadClientsDto>>
+public record ReadClientsQuery : ICommand<IReadOnlyCollection<ReadClientsDto>>;
+internal class ReadClientsQueryHandler : UnitOfWorkCommandHandler<ReadClientsQuery , IReadOnlyCollection<ReadClientsDto>>
 {
     private readonly IClientRepository _clientRepository;
 
-    public ReadClientsQueryHandler(IClientRepository clientRepository)
+    public ReadClientsQueryHandler(IClientRepository clientRepository, IUnitOfWork unitOfWork)
+        : base(unitOfWork)
     {
         _clientRepository = clientRepository;
     }
 
-    public async Task<IReadOnlyCollection<ReadClientsDto>> Handle(ReadClientsQuery request, CancellationToken cancellationToken)
+    protected override async Task<IReadOnlyCollection<ReadClientsDto>> HandleCommand(ReadClientsQuery command, CancellationToken cancellationToken)
     {
         var clients = await _clientRepository.ReadAllClients(cancellationToken);
 

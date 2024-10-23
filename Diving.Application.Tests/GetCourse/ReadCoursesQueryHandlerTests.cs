@@ -21,7 +21,7 @@ public class ReadCoursesQueryHandlerTests
         var courseRepositoryMock = new Mock<ICourseRepository>();
         courseRepositoryMock.Setup(x => x.ReadAllCourses(It.IsAny<CancellationToken>())).ReturnsAsync(courses);
 
-        var handler = new ReadCoursesQueryHandler(courseRepositoryMock.Object);
+        var handler = new ReadCoursesQueryHandler(courseRepositoryMock.Object, new Mock<IUnitOfWork>().Object);
 
         // Act
         var result = await handler.Handle(new ReadCoursesQuery(), CancellationToken.None);
@@ -40,7 +40,7 @@ public class ReadCoursesQueryHandlerTests
         var courseRepositoryMock = new Mock<ICourseRepository>();
         courseRepositoryMock.Setup(x => x.ReadAllCourses(It.IsAny<CancellationToken>())).ReturnsAsync(courses);
 
-        var handler = new ReadCoursesQueryHandler(courseRepositoryMock.Object);
+        var handler = new ReadCoursesQueryHandler(courseRepositoryMock.Object, new Mock<IUnitOfWork>().Object);
 
         // Act
         var result = await handler.Handle(new ReadCoursesQuery(), CancellationToken.None);

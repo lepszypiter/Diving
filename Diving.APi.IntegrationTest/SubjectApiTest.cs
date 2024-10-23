@@ -21,10 +21,13 @@ public class SubjectApiTest
 
     public SubjectApiTest()
     {
+        var authenticationClient = new AuthenticationClient();
         _client.BaseAddress = new Uri("http://localhost:5175");
         _client.DefaultRequestHeaders.Accept.Clear();
         _client.DefaultRequestHeaders.Accept.Add(
             new MediaTypeWithQualityHeaderValue("application/json"));
+        var token = authenticationClient.GetToken().Result;
+        _client.DefaultRequestHeaders.Add("Authorization", token);
     }
 
     [Fact]

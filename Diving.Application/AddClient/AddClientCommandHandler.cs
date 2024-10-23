@@ -2,23 +2,21 @@
 
 namespace Diving.Application.AddClient;
 
-internal class AddClientCommandHandler : ICommandHandler<AddClientCommand, Client>
+internal class AddClientCommandHandler : UnitOfWorkCommandHandler<AddClientCommand, Client>
 {
     private readonly IClientRepository _clientRepository;
-    private readonly IUnitOfWork _unitOfWork;
 
     public AddClientCommandHandler(IClientRepository clientRepository, IUnitOfWork unitOfWork)
+        : base(unitOfWork)
     {
         _clientRepository = clientRepository;
-        _unitOfWork = unitOfWork;
     }
 
-    public async Task<Client> Handle(AddClientCommand command, CancellationToken cancellationToken)
+    protected override async Task<Client> HandleCommand(AddClientCommand command, CancellationToken cancellationToken)
     {
         var client = Client.CreateNewClient(command.Name, command.Surname, command.Email);
 
-            await _clientRepository.Add(client);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
-            return client;
+        await _clientRepository.Add(client);
+        return client;
     }
 }

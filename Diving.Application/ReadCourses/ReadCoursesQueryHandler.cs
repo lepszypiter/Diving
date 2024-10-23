@@ -2,17 +2,18 @@
 
 namespace Diving.Application.ReadCourses;
 
-public record ReadCoursesQuery : IQuery<IReadOnlyCollection<ReadCoursesDto>>;
-internal class ReadCoursesQueryHandler : IQueryHandler<ReadCoursesQuery, IReadOnlyCollection<ReadCoursesDto>>
+public record ReadCoursesQuery : ICommand<IReadOnlyCollection<ReadCoursesDto>>;
+internal class ReadCoursesQueryHandler : UnitOfWorkCommandHandler<ReadCoursesQuery, IReadOnlyCollection<ReadCoursesDto>>
 {
     private readonly ICourseRepository _repository;
 
-    public ReadCoursesQueryHandler(ICourseRepository repository)
+    public ReadCoursesQueryHandler(ICourseRepository repository, IUnitOfWork unitOfWork)
+        : base(unitOfWork)
     {
         _repository = repository;
     }
 
-    public async Task<IReadOnlyCollection<ReadCoursesDto>> Handle(ReadCoursesQuery request, CancellationToken cancellationToken)
+    protected override async Task<IReadOnlyCollection<ReadCoursesDto>> HandleCommand(ReadCoursesQuery command, CancellationToken cancellationToken)
     {
         var courses = await _repository.ReadAllCourses(cancellationToken);
 

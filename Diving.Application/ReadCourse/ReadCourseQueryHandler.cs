@@ -2,19 +2,20 @@
 
 namespace Diving.Application.ReadCourse;
 
-public record ReadCourseQuery(long CourseId) : IQuery<ReadCourseDto>;
-internal class ReadCourseQueryHandler : IQueryHandler<ReadCourseQuery, ReadCourseDto>
+public record ReadCourseQuery(long CourseId) : ICommand<ReadCourseDto>;
+internal class ReadCourseQueryHandler : UnitOfWorkCommandHandler<ReadCourseQuery, ReadCourseDto>
 {
     private readonly ICourseRepository _repository;
 
-    public ReadCourseQueryHandler(ICourseRepository repository)
+    public ReadCourseQueryHandler(ICourseRepository repository, IUnitOfWork unitOfWork)
+        : base(unitOfWork)
     {
         _repository = repository;
     }
 
-    public async Task<ReadCourseDto> Handle(ReadCourseQuery request, CancellationToken cancellationToken)
+    protected override async Task<ReadCourseDto> HandleCommand(ReadCourseQuery command, CancellationToken cancellationToken)
     {
-        var course = await _repository.GetById(request.CourseId, cancellationToken);
+        var course = await _repository.GetById(command.CourseId, cancellationToken);
         if (course == null)
         {
             throw new("Course not found");

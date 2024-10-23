@@ -2,18 +2,17 @@
 
 public record UpdateClientCommand(long ClientId, string Name, string Surname) : ICommand<ClientDto>;
 
-internal class UpdateClientCommandHandler : ICommandHandler<UpdateClientCommand, ClientDto>
+internal class UpdateClientCommandHandler : UnitOfWorkCommandHandler<UpdateClientCommand, ClientDto>
 {
     private readonly IClientRepository _clientRepository;
-    private readonly IUnitOfWork _unitOfWork;
 
     public UpdateClientCommandHandler(IClientRepository clientRepository, IUnitOfWork unitOfWork)
+        : base(unitOfWork)
     {
         _clientRepository = clientRepository;
-        _unitOfWork = unitOfWork;
     }
 
-    public async Task<ClientDto> Handle(UpdateClientCommand command, CancellationToken cancellationToken)
+    protected override async Task<ClientDto> HandleCommand(UpdateClientCommand command, CancellationToken cancellationToken)
     {
         var client = await _clientRepository.GetById(command.ClientId, cancellationToken);
         if (client is null)
@@ -22,7 +21,7 @@ internal class UpdateClientCommandHandler : ICommandHandler<UpdateClientCommand,
         }
 
         client.ModifyClientData(command.Name, command.Surname);
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        await _clientRepository.Add(client);
         return new ClientDto(client.ClientId, client.Name, client.Surname, client.Email);
     }
 }

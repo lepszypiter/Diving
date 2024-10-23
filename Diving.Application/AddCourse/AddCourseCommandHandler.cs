@@ -2,28 +2,26 @@
 
 namespace Diving.Application.AddCourse;
 
-internal class AddCourseCommandHandler : ICommandHandler<AddCourseCommand, Course>
+internal class AddCourseCommandHandler : UnitOfWorkCommandHandler<AddCourseCommand, Course>
 {
     private readonly ICourseRepository _courseRepository;
-    private readonly IUnitOfWork _unitOfWork;
 
     public AddCourseCommandHandler(ICourseRepository courseRepository, IUnitOfWork unitOfWork)
+        : base(unitOfWork)
     {
         _courseRepository = courseRepository;
-        _unitOfWork = unitOfWork;
     }
 
-    public async Task<Course> Handle(AddCourseCommand request, CancellationToken cancellationToken)
+    protected override async Task<Course> HandleCommand(AddCourseCommand command, CancellationToken cancellationToken)
     {
         var course = Course.CreateNewCourse(
-            request.Name,
-            request.Instructor,
-            request.HoursOnOpenWater,
-            request.HoursOnPool,
-            request.HoursOfLectures,
-            request.Price);
+            command.Name,
+            command.Instructor,
+            command.HoursOnOpenWater,
+            command.HoursOnPool,
+            command.HoursOfLectures,
+            command.Price);
         await _courseRepository.Add(course);
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
         return course;
     }
 }

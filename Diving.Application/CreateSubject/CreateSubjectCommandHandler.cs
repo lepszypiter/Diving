@@ -2,18 +2,17 @@
 
 namespace Diving.Application.CreateSubject;
 
-internal class CreateSubjectCommandHandler : ICommandHandler<CreateSubjectCommand, Subject>
+internal class CreateSubjectCommandHandler : UnitOfWorkCommandHandler<CreateSubjectCommand, Subject>
 {
     private readonly ICourseRepository _repository;
-    private readonly IUnitOfWork _unitOfWork;
 
     public CreateSubjectCommandHandler(ICourseRepository repository, IUnitOfWork unitOfWork)
+        : base(unitOfWork)
     {
         _repository = repository;
-        _unitOfWork = unitOfWork;
     }
 
-    public async Task<Subject> Handle(CreateSubjectCommand command, CancellationToken cancellationToken)
+    protected override async Task<Subject> HandleCommand(CreateSubjectCommand command, CancellationToken cancellationToken)
     {
         var course = await _repository.GetById(command.CourseId, cancellationToken);
         if (course == null)
@@ -25,7 +24,6 @@ internal class CreateSubjectCommandHandler : ICommandHandler<CreateSubjectComman
 
         course.Subjects.Add(subject);
 
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
         return subject;
     }
 }

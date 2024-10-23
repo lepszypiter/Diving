@@ -4,18 +4,17 @@ namespace Diving.Application.UpdateCourse;
 
 public record UpdateCourseCommand(long CourseId, string Name) : ICommand<CourseDto>;
 
-internal class UpdateCourseCommandHandler : ICommandHandler<UpdateCourseCommand, CourseDto>
+internal class UpdateCourseCommandHandler : UnitOfWorkCommandHandler<UpdateCourseCommand, CourseDto>
 {
     private readonly ICourseRepository _courseRepository;
-    private readonly IUnitOfWork _unitOfWork;
 
     public UpdateCourseCommandHandler(ICourseRepository courseRepository, IUnitOfWork unitOfWork)
+        : base(unitOfWork)
     {
         _courseRepository = courseRepository;
-        _unitOfWork = unitOfWork;
     }
 
-    public async Task<CourseDto> Handle(UpdateCourseCommand command, CancellationToken cancellationToken)
+    protected override async Task<CourseDto> HandleCommand(UpdateCourseCommand command, CancellationToken cancellationToken)
     {
         var course = await _courseRepository.GetById(command.CourseId, cancellationToken);
         if (course is null)
@@ -24,7 +23,7 @@ internal class UpdateCourseCommandHandler : ICommandHandler<UpdateCourseCommand,
         }
 
         course.ModifyCourseData(command.Name, course.Instructor, course.HoursOnOpenWater, course.HoursOnPool, course.HoursOfLectures, course.Price);
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        await _courseRepository.Add(course);
         return new CourseDto(course.CourseId, course.Name, course.Instructor, course.HoursOnOpenWater, course.HoursOnPool, course.HoursOfLectures, course.Price, new List<Subject>());
     }
 }
